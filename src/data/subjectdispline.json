@@ -1,0 +1,142 @@
+[
+  {
+    "subject_name": "Mathematics",
+    "disciplines": [
+      { "discipline_name": "Algebra" },
+      { "discipline_name": "Calculus" },
+      { "discipline_name": "Geometry" }
+    ]
+  },
+  {
+    "subject_name": "Computer Science",
+    "disciplines": [
+      {
+        "discipline_name": "Programming"
+      },
+      {
+        "discipline_name": "Data Structures and Algorithms"
+      },
+      {
+        "discipline_name": "Artificial Intelligence"
+      }
+    ]
+  },
+  {
+    "subject_name": "Physics",
+    "disciplines": [
+      {
+        "discipline_name": "Classical Mechanics"
+      },
+      {
+        "discipline_name": "Quantum Mechanics"
+      },
+      {
+        "discipline_name": "Electromagnetism"
+      }
+    ]
+  },
+  {
+    "subject_name": "Biology",
+    "disciplines": [
+      { "discipline_name": "Anatomy" },
+      { "discipline_name": "Genetics" },
+      { "discipline_name": "Ecology" }
+    ]
+  },
+  {
+    "subject_name": "History",
+    "disciplines": [
+      {
+        "discipline_name": "Ancient History"
+      },
+      {
+        "discipline_name": "World History"
+      },
+      {
+        "discipline_name": "Modern History"
+      }
+    ]
+  },
+  {
+    "subject_name": "English",
+    "disciplines": [
+      {
+        "discipline_name": "Literature"
+      },
+      {
+        "discipline_name": "Creative Writing"
+      },
+      {
+        "discipline_name": "Linguistics"
+      }
+    ]
+  },
+  {
+    "subject_name": "Chemistry",
+    "disciplines": [
+      { "discipline_name": "Organic Chemistry" },
+      { "discipline_name": "Inorganic Chemistry" },
+      { "discipline_name": "Physical Chemistry" }
+    ]
+  },
+  {
+    "subject_name": "General Knowledge",
+    "disciplines": [
+      { "discipline_name": "Geography" },
+      { "discipline_name": "History" },
+      { "discipline_name": "Politics" }
+    ]
+  },
+  {
+    "subject_name": "Social Studies",
+    "disciplines": [
+      { "discipline_name": "History" },
+      { "discipline_name": "Geography" },
+      { "discipline_name": "Economics" }
+    ]
+  },
+  {
+    "subject_name": "Art",
+    "disciplines": [
+      {
+        "discipline_name": "Painting"
+      },
+      {
+        "discipline_name": "Sculpture"
+      },
+      {
+        "discipline_name": "Photography"
+      }
+    ]
+  },
+  {
+    "subject_name": "Music",
+    "disciplines": [
+      {
+        "discipline_name": "Singing"
+      },
+      {
+        "discipline_name": "Playing Instruments"
+      },
+      {
+        "discipline_name": "Music Theory"
+      }
+    ]
+  },
+  {
+    "subject_name": "Physical Education",
+    "disciplines": [
+      { "discipline_name": "Sports and Games" },
+      { "discipline_name": "Fitness and Health" },
+      { "discipline_name": "Outdoor Activities" }
+    ]
+  },
+  {
+    "subject_name": "Foreign Language",
+    "disciplines": [
+      { "discipline_name": "French" },
+      { "discipline_name": "Spanish" },
+      { "discipline_name": "Chinese" }
+    ]
+  }
+]

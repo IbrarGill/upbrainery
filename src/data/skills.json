@@ -1,0 +1,166 @@
+[
+  {
+    "skills": "Career Development",
+    "subSkills": ["Career Development", "Planning"]
+  },
+  {
+    "skills": "Communication",
+    "subSkills": ["Presentation", "Technical terminologies"]
+  },
+  {
+    "skills": "Critical Thinking",
+    "subSkills": [
+      "Conceptual Thinking",
+      "Decision Making",
+      "Inductive Reasoning",
+      "Observation"
+    ]
+  },
+  {
+    "skills": "Culinary Arts",
+    "subSkills": [
+      "Baking",
+      "Chopping",
+      "Decorating",
+      "Frying",
+      "Measuring",
+      "Mixing",
+      "Plating",
+      "Roasting",
+      "Sauce Creation",
+      "Sautéing",
+      "Slicing &amp; Dicing"
+    ]
+  },
+  {
+    "skills": "Engineering",
+    "subSkills": [
+      "Analysis",
+      "Building",
+      "Cutting",
+      "Design Thinking",
+      "Manufacturing",
+      "Modeling",
+      "Planning",
+      "Prototyping",
+      "Soldering"
+    ]
+  },
+  {
+    "skills": "Entrepreneurship",
+    "subSkills": [
+      "Advertising",
+      "Fundraising",
+      "Marketing",
+      "Pitching",
+      "Social Media"
+    ]
+  },
+  {
+    "skills": "Ethics",
+    "subSkills": ["Legal responsibilities", "Professional ethics"]
+  },
+  {
+    "skills": "History",
+    "subSkills": ["Geography", "Timeline Construction"]
+  },
+  {
+    "skills": "IT Applications",
+    "subSkills": ["Create", "Document", "Maintain"]
+  },
+  {
+    "skills": "Leadership and Teamwork",
+    "subSkills": ["Collaboration", "Leadership", "Management"]
+  },
+  {
+    "skills": "Life Skills",
+    "subSkills": [
+      "Email Etiquette",
+      "Interviewing",
+      "Organizational skills",
+      "Phone Skills",
+      "Productivity",
+      "Time management"
+    ]
+  },
+  {
+    "skills": "Literacy  Skills",
+    "subSkills": ["Collaboration", "Reading skills", "Self-regulation skills"]
+  },
+  {
+    "skills": "Manufacturing",
+    "subSkills": [
+      "Product Manufacturing",
+      "Product Refinement",
+      "Product Testing",
+      "Prototyping"
+    ]
+  },
+  {
+    "skills": "Problem Solving and Critical Thinking",
+    "subSkills": [
+      "Analyze",
+      "Creativity",
+      "Evaluation",
+      "Innovation",
+      "Synthesize"
+    ]
+  },
+  {
+    "skills": "Safety, Health, and Environmental",
+    "subSkills": [
+      "Analyze",
+      "Creativity",
+      "Evaluation",
+      "Innovation",
+      "Synthesize",
+      "Environmental management",
+      "Organizational performance",
+      "Regulatory compliance",
+      "System Safety",
+      "Synthesize"
+    ]
+  },
+
+  {
+    "skills": "Social Emotional Learning",
+    "subSkills": []
+  },
+  {
+    "skills": "Soft Skills",
+    "subSkills": [
+      "Active Listening",
+      "Adaptability",
+      "Interpersonal Communication",
+      "Negotiations",
+      "Team Player Attitude"
+    ]
+  },
+  {
+    "skills": "Systems",
+    "subSkills": [
+      "Departments",
+      "Product quality",
+      "Responsibilities",
+      "Roles",
+      "Work units"
+    ]
+  },
+  {
+    "skills": "Technical Skills",
+    "subSkills": ["Design", "Implementation", "Maintenance", "Operations"]
+  },
+  {
+    "skills": "Visual Arts",
+    "subSkills": [
+      "Acrylic",
+      "Drawing",
+      "Painting",
+      "Print Making",
+      "Sculpting",
+      "Sketching",
+      "Typography",
+      "Watercolor"
+    ]
+  }
+]

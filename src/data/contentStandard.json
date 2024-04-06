@@ -1,0 +1,301 @@
+[
+  {
+    "standardType": "NGSS",
+    "standardLevel": [
+      {
+        "levelName": "1",
+        "LevelSubject": [
+          {
+            "subjectName": "Earth and Space Sciences",
+            "standard": [
+              "1-ESS1-1 Earth's Place in the Universe - Use observations of the sun, moon, and stars to describe patterns that can be predicted ",
+              "1-ESS1-2 Earth's Place in the Universe - Make observations at different times of year to relate the amount of daylight to the time of year."
+            ]
+          },
+          {
+            "subjectName": "Life Sciences",
+            "standard": [
+              "1-LS1-1 From Molecules to Organisms: Structures and Processes - Use materials to design a solution to a human problem by mimicking how plants and/or animals use their external parts to help them survive, grow, and meet their needs.",
+              "1-LS1-2 From Molecules to Organisms: Structures and Processes - Read texts and use media to determine patterns in behavior of parents and offspring that help offspring survive.",
+              "1-LS3-1 Heredity: Inheritance and Variation of Traits - Make observations to construct an evidence-based account that young plants and animals are like, but not exactly like, their parents."
+            ]
+          },
+          {
+            "subjectName": "Physical Sciences",
+            "standard": [
+              "1-PS4-1 Waves and Their Applications in Technologies for Information Transfer - Plan and conduct investigations to provide evidence that vibrating materials can make sound and that sound can make materials vibrate",
+              "1-PS4-2 Waves and Their Applications in Technologies for Information Transfer - Make observations to construct an evidence-based account that objects in darkness can be seen only when illuminated",
+              "1-PS4-3 Waves and Their Applications in Technologies for Information Transfer - Plan and conduct investigations to determine the effect of placing objects made with different materials in the path of a beam of light",
+              "1-PS4-4 Waves and Their Applications in Technologies for Information Transfer - Use tools and materials to design and build a device that uses light or sound to solve the problem of communicating over a distance."
+            ]
+          }
+        ]
+      },
+      {
+        "levelName": "2",
+        "LevelSubject": [
+          {
+            "subjectName": "Earth and Space Sciences",
+            "standard": [
+              "2-ESS1-1 Earth's Place in the Universe - Use information from several sources to provide evidence that Earth events can occur quickly or slowly.",
+              "2-ESS2-1 Earth's Systems - Compare multiple solutions designed to slow or prevent wind or water from changing the shape of the land.",
+              "2-ESS2-2 Earth's Systems - Develop a model to represent the shapes and kinds of land and bodies of water in an area",
+              "2-ESS2-3 Earth's Systems - Obtain information to identify where water is found on Earth and that it can be solid or liquid",
+              "2-LS2-1 Ecosystems: Interactions, Energy, and Dynamics - Plan and conduct an investigation to determine if plants need sunlight and water to grow."
+            ]
+          },
+          {
+            "subjectName": "Engineering, Technology and Applications of Science",
+            "standard": [
+              "2-LS2-2 Ecosystems: Interactions, Energy, and Dynamics - Develop a simple model that mimics the function of an animal in dispersing seeds or pollinating plants.",
+              "2-LS4-1 Biological Evolution: Unity and Diversity - Make observations of plants and animals to compare the diversity of life in different habitats"
+            ]
+          },
+          {
+            "subjectName": "Life Sciences",
+            "standard": [
+              "2-LS4-1 Biological Evolution: Unity and Diversity - Make observations of plants and animals to compare the diversity of life in different habitats",
+              "2-PS1-2 Matter and Its Interactions - Analyze data obtained from testing different materials to determine which materials have the properties that are best suited for an intended purpose.",
+              "2-PS1-3 Matter and Its Interactions - Make observations to construct an evidence-based account of how an object made of a small set of pieces can be disassembled and made into a new object"
+            ]
+          },
+          {
+            "subjectName": "Physical Sciences",
+            "standard": [
+              "2-PS1-4 Matter and Its Interactions - Construct an argument with evidence that some changes caused by heating or cooling can be reversed and some cannot",
+              "3-ESS2-1 Earth's Systems - Represent data in tables and graphical displays to describe typical weather conditions expected during a particular season",
+              "3-ESS2-2 Earth's Systems - Obtain and combine information to describe climates in different regions of the world",
+              "3-ESS3-1 Earth and Human Activity - Make a claim about the merit of a design solution that reduces the impacts of a weather-related hazard."
+            ]
+          }
+        ]
+      },
+      {
+        "levelName": "3",
+        "LevelSubject": [
+          {
+            "subjectName": "Earth and Space Sciences",
+            "standard": [
+              "3-LS1-1 From molecules to Organisms: Structures and Processes - Develop models to describe that organisms have unique and diverse life cycles but all have in common birth, growth, reproduction, and death.",
+              "3-LS2-1 Ecosystems: Interactions, Energy, and Dynamics - Construct an argument that some animals form groups that help members survive.",
+              "3-LS3-1 Heredity: Inheritance and Variation of Traits - Analyze and interpret data to provide evidence that plants and animals have traits inherited from parents and that variation of these traits exists in a group of similar organisms.",
+              "K-ESS3-3 Earth and Human Activity - Communicate solutions that will reduce the impact of humans on the land, water, air, and/or other living things in the local environment"
+            ]
+          },
+          {
+            "subjectName": "Life Sciences",
+            "standard": [
+              "3-LS4-2 Biological Evolution: Unity and Diversity - Use evidence to construct an explanation for how the variations in characteristics among individuals of the same species may provide advantages in surviving, finding mates, and reproducing.",
+              "3-LS4-1 Biological Evolution: Unity and Diversity - Analyze and interpret data from fossils to provide evidence of the organisms and the environments in which they lived long ago.",
+              "3-LS4-2 Biological Evolution: Unity and Diversity - Use evidence to construct an explanation for how the variations in characteristics among individuals of the same species may provide advantages in surviving, finding mates, and reproducing.",
+              "3-LS4-3 Biological Evolution: Unity and Diversity - Construct an argument with evidence that in a particular habitat some organisms can survive well, some survive less well, and some cannot survive at all",
+              "3-LS4-4 Biological Evolution: Unity and Diversity - Make a claim about the merit of a solution to a problem caused when the environment changes and the types of plants and animals that live there may change.",
+              "3-PS2-1 Motion and Stability: Forces and Interactions - Plan and conduct an investigation to provide evidence of the effects of balanced and unbalanced forces on the motion of an object",
+              "3-PS2-2 Motion and Stability: Forces and Interactions - Make observations and/or measurements of an object’s motion to provide evidence that a pattern can be used to predict future motion.",
+              "3-PS2-3 Motion and Stability: Forces and Interactions - Ask questions to determine cause and effect relationships of electric or magnetic interactions between two objects not in contact with each other."
+            ]
+          },
+          {
+            "subjectName": "Physical Sciences",
+            "standard": [
+              "3-PS2-4 Motion and Stability: Forces and Interactions - Define a simple design problem that can be solved by applying scientific ideas about magnets",
+              "K-2-ETS1-1 Engineering Design - Ask questions, make observations, and gather information about a situation people want to change to define a simple problem that can be solved through the development of a new or improved object or tool.",
+              "K-2-ETS1-2 Engineering Design - Develop a simple sketch, drawing, or physical model to illustrate how the shape of an object helps it function as needed to solve a given problem.",
+              "K-2-ETS1-3 Engineering Design - Analyze data from tests of two objects designed to solve the same problem to compare the strengths and weaknesses of how each performs"
+            ]
+          }
+        ]
+      },
+      {
+        "levelName": "K",
+        "LevelSubject": [
+          {
+            "subjectName": "Earth and Space Sciences",
+            "standard": [
+              "K-ESS2-1 Earth's Systems - Use and share observations of local weather conditions to describe patterns over time.",
+              "K-ESS2-2 Earth's Systems",
+              "K-ESS3-1 Earth and Human Activity - Use a model to represent the relationship between the needs of differen",
+              "K-ESS3-2 Earth and Human Activity - Ask questions to obtain information about the purpose of weather forecasting to prepare for, and respond to, severe weather."
+            ]
+          },
+          {
+            "subjectName": "Life Sciences",
+            "standard": [
+              "K-LS1-1 From Molecules to Organisms: Structures and Processes Use observations to describe patterns of what plants and animals (including humans) need to survive."
+            ]
+          },
+          {
+            "subjectName": "Physical Sciences",
+            "standard": [
+              "K-PS2-1 Motion and Stability: Forces and Interactions - Plan and conduct an investigation to compare the effect",
+              "K-PS2-2 Motion and Stability: Forces and Interactions - Analyze data to determine if a design solution works as intended to change the speed or direction of an object with a push or a pull"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "standardType": "Common Core CTE",
+    "standardLevel": [
+      {
+        "levelName": "Middle School",
+        "LevelSubject": [
+          {
+            "subjectName": "Business Management",
+            "standard": [
+              "BM 1.1: Solve mathematical problems using numbers and operations.",
+              "BM 1.3: Employ measurement skills to make business decisions.",
+              "BM 2.1: Obtain and provide information in a business setting.",
+              "BM 2.2: Demonstrate ethical behaviors in the workplace.",
+              "BM 2.3: Manage internal and external business relationships to foster positive interactions.",
+              "BM 3.2: Develop personal traits and behaviors to foster career advancement.",
+              "BM 3.3: Implement job-seeking skills to obtain employment",
+              "BM 3.5: Utilize career-planning to enhance job-success potential.",
+              "BM 4.1: Perform customer service activities to support customer relationships and encourage repeat business",
+              "BM 4.2: Utilize technology to facilitate customer relationship management and workplace communication",
+              "BM 6.2: Identify management principles utilize for continuous quality improvement"
+            ]
+          },
+          {
+            "subjectName": "Cloud Computing",
+            "standard": []
+          },
+          {
+            "subjectName": "Information Technology",
+            "standard": [
+              "IT 2.2: Identify and implement new products/services.",
+              "IT 5.1: Demonstrate understanding of the impact of IT on businesses.",
+              "IT 6.1: Identify new IT technologies.",
+              "IT-SUP 9.1: Employ sound technical writing skills including keyboarding and handwriting"
+            ]
+          },
+          {
+            "subjectName": "Network",
+            "standard": []
+          },
+          {
+            "subjectName": "Security",
+            "standard": [
+              "3-5.DC.ETH Discuss examples of cyber attacks.",
+              "6-8.DC.THRT Describe various types of threat actors.",
+              "6-8.SEC.ACC Explain the concept of access control and how to limit access to authorized users.",
+              "6-8.SEC.AUTH Explain how authentication and authorization methods can protect authorized users.",
+              "6-8.SEC.CIA Explain the effects of a failure of the CIA Triad.",
+              "6-8.SEC.COMP Describe Defense in Depth strategies to protect simple networks.",
+              "6-8.SEC.CRYP Discuss methods and the need for encrypting information when it is being exchanged, e.g., http vs. https.",
+              "6-8.SEC.CTRL Describe Defense in Depth and how physical access controls work together",
+              "6-8.SEC.DATA Describe data in its three states and potential threats to each state."
+            ]
+          }
+        ]
+      },
+      {
+        "levelName": "High School",
+        "LevelSubject": [
+          {
+            "subjectName": "Business Management",
+            "standard": [
+              "1-ESS1-3 Math",
+              "BM 1.1: Solve mathematical problems using numbers and operations.",
+              "BM 1.3: Employ measurement skills to make business decisions",
+              "BM 2.1: Obtain and provide information in a business setting.",
+              "BM 2.2: Demonstrate ethical behaviors in the workplace.",
+              "BM 2.3: Manage internal and external business relationships to foster positive interactions.",
+              "BM 3.2: Develop personal traits and behaviors to foster career advancement.",
+              "BM 3.3: Implement job-seeking skills to obtain employment",
+              "BM 3.5: Utilize career-planning to enhance job-success potential.",
+              "BM 4.1: Perform customer service activities to support customer relationships and encourage repeat business",
+              "BM 4.2: Utilize technology to facilitate customer relationship management and workplace communication",
+              "BM 6.2: Identify management principles utilize for continuous quality improvement"
+            ]
+          },
+          {
+            "subjectName": "Cloud Computing",
+            "standard": []
+          },
+          {
+            "subjectName": "Information Technology",
+            "standard": [
+              "IT 2.2: Identify and implement new products/services.",
+              "IT 5.1: Demonstrate understanding of the impact of IT on businesses.",
+              "IT 6.1: Identify new IT technologies.",
+              "IT-SUP 9.1: Employ sound technical writing skills including keyboarding and handwriting"
+            ]
+          },
+          {
+            "subjectName": "Network",
+            "standard": []
+          },
+          {
+            "subjectName": "Security",
+            "standard": [
+              "3-5.DC.ETH Discuss examples of cyber attacks.",
+              "6-8.DC.THRT Describe various types of threat actors.",
+              "6-8.SEC.ACC Explain the concept of access control and how to limit access to authorized users.",
+              "6-8.SEC.AUTH Explain how authentication and authorization methods can protect authorized users.",
+              "6-8.SEC.CIA Explain the effects of a failure of the CIA Triad.",
+              "6-8.SEC.COMP Describe Defense in Depth strategies to protect simple networks.",
+              "6-8.SEC.CRYP Discuss methods and the need for encrypting information when it is being exchanged, e.g., http vs. https.",
+              "6-8.SEC.CTRL Describe Defense in Depth and how physical access controls work together",
+              "6-8.SEC.DATA Describe data in its three states and potential threats to each state.",
+              "6-8.SEC.INFO Analyze threats and vulnerabilities to information security for individuals and organizations.",
+              "6-8.SEC.NET Explain how malicious actions threaten network security.",
+              "6-8.SEC.PHYS Explain how malicious actions threaten physical security",
+              "9-12.DC.ETH Discuss the role that cyber ethics plays in current society",
+              "9-12.DC.THRT Analyze the motives of threat actors",
+              "9-12.SEC.ACC Compare and contrast the concepts presented by access control principles, access control modules, and the principle of least privilege access.",
+              "9-12.SEC.AUTH Evaluate authentication and authorization methods and the risks associated with failure.",
+              "9-12.SEC.CIA Explain various interactions between the CIA Triad and the three states of data.",
+              "9-12.SEC.COMP Evaluate Defense in Depth strategies that can protect simple networks.",
+              "9-12.SEC.CRYP Analyze how modern advancements in computing have impacted encryption.",
+              "9-12.SEC.CTRL Justify the use of Defense in Depth and the need for physical access controls",
+              "9-12.SEC.DATA Formulate a plan to apply security measures to protect data in all three states.",
+              "9-12.SEC.INFO Distinguish the different types of attacks that affect information security for individuals and organizations.",
+              "9-12.SEC.NET Analyze the different types of attacks that affect network security.",
+              "9-12.SEC.PHYS Analyze the different types of attacks that affect physical security"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "standardType": "CDE",
+    "standardLevel": [
+      {
+        "levelName": "Grade 1",
+        "LevelSubject": [
+          {
+            "subjectName": "Math",
+            "standard": [
+              "Algebra and Functions - OA.A. Operations &amp; Algebraic Thinking: Represent and solve problems involving addition and subtraction",
+              "Algebra and Functions - OA.B. Operations &amp; Algebraic Thinking: Understand and apply properties of operations and the relationship between addition and subtraction",
+              "Number and Quantity - NBT.A. Number &amp; Operations in Base Ten: Extend the counting sequence.",
+              "Number and Quantity - NBT.B. Number &amp; Operations in Base Ten: Understand place value.",
+              "Number and Quantity - NBT.C. Number &amp; Operations in Base Ten: Use place value understanding and properties of operations to add and subtract."
+            ]
+          }
+        ]
+      },
+      {
+        "levelName": "Grade 3",
+        "LevelSubject": [
+          {
+            "subjectName": "English Language Art",
+            "standard": [
+              "Oral Expression and Listening - Communicate using appropriate language in informal and formal situations",
+              "Oral Expression and Listening - Participate cooperatively in group activities",
+              "Reading for All Purposes - Apply knowledge of spelling patterns (orthography), word meanings (morphology), and word relationships to decode words and increase vocabulary",
+              "Reading for All Purposes - Apply strategies to fluently read and comprehend various informational texts",
+              "Reading for All Purposes - Apply strategies to fluently read and comprehend various literary texts",
+              "Writing and Composition - Write informative/explanatory texts developed with facts, definitions, and details, ending with a related concluding statement",
+              "Writing and Composition - Write opinion pieces on topics or texts, supporting a point of view with reasons",
+              "Writing and Composition - Write real or imagined narratives that use descriptive details, have a clear sequence of events, and provide closure"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

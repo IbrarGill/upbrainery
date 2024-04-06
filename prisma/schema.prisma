@@ -1,0 +1,2153 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model account_types {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  name       String    @unique(map: "account_types_name_unique") @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+  deleted_at DateTime? @db.Timestamp(0)
+  is_active  Boolean?  @default(true)
+  users      users[]
+}
+
+model experty_levels {
+  id                Int                 @id @default(autoincrement()) @db.UnsignedInt
+  name              String              @unique(map: "experty_levels_name_unique") @db.VarChar(255)
+  created_at        DateTime?           @db.Timestamp(0)
+  updated_at        DateTime?           @db.Timestamp(0)
+  deleted_at        DateTime?           @db.Timestamp(0)
+  is_active         Boolean?            @default(true)
+  tutor_experiances tutor_experiances[]
+}
+
+model grades {
+  id                                                                Int                     @id @default(autoincrement()) @db.UnsignedInt
+  name                                                              String                  @unique(map: "grades_name_unique") @db.VarChar(255)
+  created_at                                                        DateTime?               @db.Timestamp(0)
+  updated_at                                                        DateTime?               @db.Timestamp(0)
+  deleted_at                                                        DateTime?               @db.Timestamp(0)
+  is_active                                                         Boolean?                @default(true)
+  clusters_clusters_from_grade_idTogrades                           clusters[]              @relation("clusters_from_grade_idTogrades")
+  clusters_clusters_to_grade_idTogrades                             clusters[]              @relation("clusters_to_grade_idTogrades")
+  contents_contents_from_grade_idTogrades                           contents[]              @relation("contents_from_grade_idTogrades")
+  contents_contents_to_grade_idTogrades                             contents[]              @relation("contents_to_grade_idTogrades")
+  interactives                                                      interactives[]
+  interactives_interactives_to_grade_idTointeractive_types          interactives[]          @relation("interactives_to_grade_idTointeractive_types")
+  learner_details_learner_details_from_grade_idTogrades             learner_details[]       @relation("learner_details_from_grade_idTogrades")
+  learner_details_learner_details_to_grade_idTogrades               learner_details[]       @relation("learner_details_to_grade_idTogrades")
+  organization_contents_organization_contents_from_grade_idTogrades organization_contents[] @relation("organization_contents_from_grade_idTogrades")
+  organization_contents_organization_contents_to_grade_idTogrades   organization_contents[] @relation("organization_contents_to_grade_idTogrades")
+  tutor_experiances_tutor_experiances_from_grade_idTogrades         tutor_experiances[]     @relation("tutor_experiances_from_grade_idTogrades")
+  tutor_experiances_tutor_experiances_to_grade_idTogrades           tutor_experiances[]     @relation("tutor_experiances_to_grade_idTogrades")
+}
+
+model question_types {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  name       String    @unique(map: "question_types_name_unique") @db.VarChar(255)
+  deleted_at DateTime? @db.Timestamp(0)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+  is_active  Boolean?  @default(true)
+}
+
+model questions {
+  id                                 Int                                  @id @default(autoincrement()) @db.UnsignedInt
+  question                           String                               @db.Text
+  points                             Int?
+  instructor_id                      Int                                  @db.UnsignedInt
+  interactive_type_id                Int?                                 @db.UnsignedInt
+  deleted_at                         DateTime?                            @db.Timestamp(0)
+  created_at                         DateTime?                            @db.Timestamp(0)
+  updated_at                         DateTime?                            @db.Timestamp(0)
+  organization_id                    Int?                                 @db.UnsignedInt
+  is_active                          Boolean?
+  interactive_assignment_submissions interactive_assignment_submissions[]
+  interactive_quiz_submissions       interactive_quiz_submissions[]
+  question_interactive_subjects      question_interactive_subjects[]
+  question_options                   question_options[]
+  question_skills                    question_skills[]
+  organizations                      organizations?                       @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_questions_organization_id")
+  users                              users                                @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "questions_instructor_id_foreign")
+  interactive_types                  interactive_types?                   @relation(fields: [interactive_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "questions_interactive_type_id_foreign")
+
+  @@index([instructor_id], map: "questions_instructor_id_foreign")
+  @@index([interactive_type_id], map: "questions_interactive_type_id_foreign_idx")
+  @@index([organization_id], map: "fk_questions_organization_id")
+}
+
+model question_options {
+  id                           Int                            @id @default(autoincrement()) @db.UnsignedInt
+  answer                       String                         @db.VarChar(255)
+  is_correct                   Boolean                        @default(false)
+  question_id                  Int                            @db.UnsignedInt
+  created_at                   DateTime?                      @db.Timestamp(0)
+  updated_at                   DateTime?                      @db.Timestamp(0)
+  is_active                    Boolean?                       @default(true)
+  deleted_at                   DateTime?                      @db.DateTime(0)
+  interactive_quiz_submissions interactive_quiz_submissions[]
+  questions                    questions                      @relation(fields: [question_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_question_options_q_id")
+
+  @@index([question_id], map: "question_options_question_id_foreign")
+}
+
+model subjects {
+  id                          Int                           @id @default(autoincrement()) @db.UnsignedInt
+  name                        String                        @unique(map: "subjects_name_unique") @db.VarChar(255)
+  created_at                  DateTime?                     @db.Timestamp(0)
+  updated_at                  DateTime?                     @db.Timestamp(0)
+  deleted_at                  DateTime?                     @db.Timestamp(0)
+  is_active                   Boolean?                      @default(true)
+  content_subject_disciplines content_subject_disciplines[]
+  interactive_subjects        interactive_subjects[]
+  subject_disciplines         subject_disciplines[]
+  tutor_experiances           tutor_experiances[]
+}
+
+model teaching_styles {
+  id                          Int                     @id @default(autoincrement()) @db.UnsignedInt
+  name                        String                  @unique(map: "teaching_styles_name_unique") @db.VarChar(255)
+  created_at                  DateTime?               @db.Timestamp(0)
+  updated_at                  DateTime?               @db.Timestamp(0)
+  deleted_at                  DateTime?               @db.Timestamp(0)
+  is_active                   Boolean?                @default(true)
+  other_tutor_teaching_styles tutor_teaching_styles[] @relation("tutor_teaching_stylesTotutor_teaching_styles")
+}
+
+model tutor_credentials {
+  id            Int       @id @default(autoincrement()) @db.UnsignedInt
+  name          String    @db.VarChar(255)
+  instructor_id Int       @db.UnsignedInt
+  created_at    DateTime? @db.Timestamp(0)
+  updated_at    DateTime? @db.Timestamp(0)
+  deleted_at    DateTime? @db.Timestamp(0)
+  is_active     Boolean?  @default(true)
+  users         users     @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tutor_credentials_instructor_id_foreign")
+
+  @@index([instructor_id], map: "tutor_credentials_instructor_id_foreign")
+}
+
+model tutor_experiances {
+  id                                             Int            @id @default(autoincrement()) @db.UnsignedInt
+  from_grade_id                                  Int            @db.UnsignedInt
+  to_grade_id                                    Int?           @db.UnsignedInt
+  subject_id                                     Int            @db.UnsignedInt
+  experty_level_id                               Int            @db.UnsignedInt
+  instructor_id                                  Int            @db.UnsignedInt
+  created_at                                     DateTime?      @db.Timestamp(0)
+  updated_at                                     DateTime?      @db.Timestamp(0)
+  deleted_at                                     DateTime?      @db.Timestamp(0)
+  is_active                                      Boolean?       @default(true)
+  experty_levels                                 experty_levels @relation(fields: [experty_level_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tutor_experiances_experty_level_id_foreign")
+  grades_tutor_experiances_from_grade_idTogrades grades         @relation("tutor_experiances_from_grade_idTogrades", fields: [from_grade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tutor_experiances_grade_id_foreign")
+  users                                          users          @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tutor_experiances_instructor_id_foreign")
+  subjects                                       subjects       @relation(fields: [subject_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "tutor_experiances_subject_id_foreign")
+  grades_tutor_experiances_to_grade_idTogrades   grades?        @relation("tutor_experiances_to_grade_idTogrades", fields: [to_grade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tutor_experiances_to_grade_id_foreign")
+
+  @@index([experty_level_id], map: "tutor_experiances_experty_level_id_foreign")
+  @@index([from_grade_id], map: "tutor_experiances_grade_id_foreign")
+  @@index([instructor_id], map: "tutor_experiances_instructor_id_foreign")
+  @@index([subject_id], map: "tutor_experiances_subject_id_foreign")
+  @@index([to_grade_id], map: "tutor_experiances_to_grade_id_foreign_idx")
+}
+
+model tutor_teaching_styles {
+  id                    Int              @id @default(autoincrement()) @db.UnsignedInt
+  instructor_id         Int              @db.UnsignedInt
+  teaching_style_id     Int?             @db.UnsignedInt
+  created_at            DateTime?        @db.Timestamp(0)
+  updated_at            DateTime?        @db.Timestamp(0)
+  deleted_at            DateTime?        @db.Timestamp(0)
+  is_active             Boolean?         @default(true)
+  tutor_teaching_styles teaching_styles? @relation("tutor_teaching_stylesTotutor_teaching_styles", fields: [teaching_style_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tutor_teaching_styles_teaching_id_foreign")
+  users                 users            @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tutor_teaching_styles_instructor_id_foreign")
+
+  @@index([teaching_style_id], map: "tutor_teaching_style_id_foreign_idx")
+  @@index([instructor_id])
+}
+
+model users {
+  id                                                  Int                                  @id @default(autoincrement()) @db.UnsignedInt
+  first_name                                          String?                              @db.VarChar(255)
+  last_name                                           String?                              @db.VarChar(255)
+  user_name                                           String                               @unique(map: "users_user_name_unique") @db.VarChar(255)
+  email                                               String                               @db.VarChar(255)
+  email_verified_at                                   DateTime?                            @db.Timestamp(0)
+  password                                            String                               @db.VarChar(255)
+  bio                                                 String?                              @db.Text
+  per_hour_rate                                       Decimal?                             @default(0.00) @db.Decimal(5, 2)
+  theme                                               String                               @default("default") @db.VarChar(255)
+  account_type_id                                     Int                                  @db.UnsignedInt
+  access_token                                        String?                              @db.Text
+  refresh_token                                       String?                              @db.Text
+  is_block                                            Boolean                              @default(false)
+  remember_token                                      String?                              @db.VarChar(100)
+  organization_id                                     Int?                                 @db.UnsignedInt
+  is_active                                           Boolean?                             @default(true)
+  is_independent                                      Boolean?                             @default(false)
+  created_at                                          DateTime?                            @db.Timestamp(0)
+  updated_at                                          DateTime?                            @db.Timestamp(0)
+  deleted_at                                          DateTime?                            @db.DateTime(0)
+  created_by                                          Int?
+  is_term_condition                                   Boolean?
+  is_private_policies                                 Boolean?
+  password_reset_code                                 Int?
+  is_blacklisted                                      Boolean?                             @default(false)
+  role_id                                             Int?                                 @db.UnsignedInt
+  instructor_pd_id                                    Int?                                 @db.UnsignedInt
+  attachments                                         attachments[]
+  augmented_3d_models                                 augmented_3d_models[]
+  badges                                              badges[]
+  badges_badges_created_byTousers                     badges[]                             @relation("badges_created_byTousers")
+  blocks                                              blocks[]
+  certification_levels                                certification_levels[]
+  chatbot_questions                                   chatbot_questions[]
+  chats                                               chats[]
+  clusters                                            clusters[]
+  clusters_clusters_created_byTousers                 clusters[]                           @relation("clusters_created_byTousers")
+  content_blocks                                      content_blocks[]
+  content_interactive_segments                        content_interactive_segments[]
+  content_module_segment_activities                   content_module_segment_activities[]
+  content_module_segment_time_record                  content_module_segment_time_record[]
+  content_module_segments                             content_module_segments[]
+  contents                                            contents[]
+  contents_contents_created_byTousers                 contents[]                           @relation("contents_created_byTousers")
+  instructor_activities                               instructor_activities[]
+  instructor_courses                                  instructor_courses[]
+  instructor_interactives                             instructor_interactives[]
+  instructor_sessions                                 instructor_sessions[]
+  interactive_assignment_results                      interactive_assignment_results[]
+  interactive_assignment_submissions                  interactive_assignment_submissions[]
+  interactive_quest_submissions                       interactive_quest_submissions[]
+  interactive_quiz_results                            interactive_quiz_results[]
+  interactives_interactives_created_byTousers         interactives[]                       @relation("interactives_created_byTousers")
+  interactives                                        interactives[]
+  learner_badges                                      learner_badges[]
+  learner_career_interests                            learner_career_interests[]
+  learner_courses                                     learner_courses[]
+  learner_details                                     learner_details[]
+  learner_goals                                       learner_goals[]
+  learner_hobbies                                     learner_hobbies[]
+  learner_interests                                   learner_interests[]
+  learner_pathways                                    learner_pathways[]
+  learner_skills                                      learner_skills[]
+  notifications_notifications_receiver_user_idTousers notifications[]                      @relation("notifications_receiver_user_idTousers")
+  notifications_notifications_sender_user_idTousers   notifications[]                      @relation("notifications_sender_user_idTousers")
+  notifications                                       notifications[]
+  onet_api                                            onet_api[]
+  pathways_pathways_created_byTousers                 pathways[]                           @relation("pathways_created_byTousers")
+  pathways                                            pathways[]
+  poll_question_submissions                           poll_question_submissions[]
+  poll_questions                                      poll_questions[]
+  questions                                           questions[]
+  schedules_schedules_instructor_idTousers            schedules[]                          @relation("schedules_instructor_idTousers")
+  schedules_schedules_learner_idTousers               schedules[]                          @relation("schedules_learner_idTousers")
+  smartdesks                                          smartdesks[]
+  socket_learners                                     socket_learners[]
+  tutor_credentials                                   tutor_credentials[]
+  tutor_experiances                                   tutor_experiances[]
+  tutor_teaching_styles                               tutor_teaching_styles[]
+  user_manager_user_manager_manager_idTousers         user_manager[]                       @relation("user_manager_manager_idTousers")
+  user_manager_user_manager_user_idTousers            user_manager[]                       @relation("user_manager_user_idTousers")
+  user_sessions                                       user_sessions[]
+  user_sockets                                        user_sockets[]
+  organizations                                       organizations?                       @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_organization_id")
+  users                                               users?                               @relation("usersTousers", fields: [instructor_pd_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_instructor_pd_id")
+  other_users                                         users[]                              @relation("usersTousers")
+  account_types                                       account_types                        @relation(fields: [account_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_account_type_id_foreign")
+  roles                                               roles?                               @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_role_id")
+
+  @@index([account_type_id], map: "users_account_type_id_foreign")
+  @@index([organization_id], map: "fk_user_organization_id")
+  @@index([role_id], map: "fk_users_role_id_idx")
+  @@index([instructor_pd_id], map: "fk_users_instructor_pd_id_idx")
+}
+
+model interactive_subjects {
+  id                            Int                             @id @default(autoincrement()) @db.UnsignedInt
+  subject_id                    Int                             @db.UnsignedInt
+  interactive_id                Int                             @db.UnsignedInt
+  created_at                    DateTime?                       @db.Timestamp(0)
+  updated_at                    DateTime?                       @db.Timestamp(0)
+  is_active                     Boolean?                        @default(true)
+  deleted_at                    DateTime?                       @db.DateTime(0)
+  subjects                      subjects                        @relation(fields: [subject_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_interactive_subject_id")
+  interactives                  interactives                    @relation(fields: [interactive_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_interactive_subject_interactive_id")
+  question_interactive_subjects question_interactive_subjects[]
+
+  @@index([interactive_id], map: "interactive_subjects_interactive_id_foreign")
+  @@index([subject_id], map: "interactive_subjects_subject_id_foreign")
+}
+
+model interactive_types {
+  id                                                               Int                       @id @default(autoincrement()) @db.UnsignedInt
+  name                                                             String                    @unique(map: "interactive_types_name_unique") @db.VarChar(255)
+  created_at                                                       DateTime?                 @db.Timestamp(0)
+  updated_at                                                       DateTime?                 @db.Timestamp(0)
+  is_active                                                        Boolean?                  @default(true)
+  deleted_at                                                       DateTime?                 @db.DateTime(0)
+  instructor_interactives                                          instructor_interactives[]
+  interactives_interactives_interactive_type_idTointeractive_types interactives[]            @relation("interactives_interactive_type_idTointeractive_types")
+  questions                                                        questions[]
+}
+
+model attachment_types {
+  id          Int           @id @default(autoincrement()) @db.UnsignedInt
+  name        String        @unique(map: "attachment_types_name_unique") @db.VarChar(255)
+  created_at  DateTime?     @db.Timestamp(0)
+  updated_at  DateTime?     @db.Timestamp(0)
+  deleted_at  DateTime?     @db.Timestamp(0)
+  is_active   Boolean?      @default(true)
+  attachments attachments[]
+}
+
+model attachments {
+  id                             Int                              @id @default(autoincrement()) @db.UnsignedInt
+  attachmentable_type            String                           @db.VarChar(255)
+  attachmentable_id              Int                              @db.UnsignedInt
+  field_name                     String?                          @db.VarChar(255)
+  attachment_type_id             Int                              @db.UnsignedInt
+  path                           String                           @db.Text
+  Image_key                      String?                          @db.VarChar(300)
+  created_at                     DateTime?                        @db.Timestamp(0)
+  updated_at                     DateTime?                        @db.Timestamp(0)
+  deleted_at                     DateTime?                        @db.Timestamp(0)
+  is_active                      Boolean?                         @default(true)
+  user_id                        Int?                             @db.UnsignedInt
+  availability_id                Int?                             @db.UnsignedInt
+  organization_id                Int?                             @db.UnsignedInt
+  attachment_types               attachment_types                 @relation(fields: [attachment_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "attachments_attachment_type_id_foreign")
+  availabilities                 availabilities?                  @relation(fields: [availability_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_attachment_availability_id")
+  organizations                  organizations?                   @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_attachments_organization_id")
+  users                          users?                           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_attachments_user_id")
+  augmented_3d_model_attachments augmented_3d_model_attachments[]
+  augmented_3d_models            augmented_3d_models[]
+
+  @@index([attachment_type_id], map: "attachments_attachment_type_id_foreign")
+  @@index([attachmentable_type, attachmentable_id], map: "attachments_attachmentable_type_attachmentable_id_index")
+  @@index([availability_id], map: "fk_attachment_availability_id_idx")
+  @@index([organization_id], map: "fk_attachments_organization_id_idx")
+  @@index([user_id], map: "fk_attachments_user_id_idx")
+}
+
+model chatbot_question_answers {
+  id                  Int               @id @default(autoincrement()) @db.UnsignedInt
+  chatbot_question_id Int               @db.UnsignedInt
+  description         String            @db.Text
+  created_at          DateTime?         @db.Timestamp(0)
+  updated_at          DateTime?         @db.Timestamp(0)
+  is_active           Boolean?          @default(true)
+  deleted_at          DateTime?         @db.DateTime(0)
+  chatbot_questions   chatbot_questions @relation(fields: [chatbot_question_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "chatbot_question_answers_chatbot_question_id_foreign")
+
+  @@index([chatbot_question_id], map: "chatbot_question_answers_chatbot_question_id_foreign")
+}
+
+model chatbot_questions {
+  id                       Int                        @id @default(autoincrement()) @db.UnsignedInt
+  description              String                     @db.Text
+  user_id                  Int?                       @db.UnsignedInt
+  created_at               DateTime?                  @db.Timestamp(0)
+  updated_at               DateTime?                  @db.Timestamp(0)
+  organization_id          Int?                       @db.UnsignedInt
+  is_active                Boolean?                   @default(true)
+  deleted_at               DateTime?                  @db.DateTime(0)
+  chatbot_question_answers chatbot_question_answers[]
+  organizations            organizations?             @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_chatbot_question_orgnization_id")
+  users                    users?                     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_chatbot_user_id")
+
+  @@index([user_id], map: "fk_chatbot_user_id_idx")
+  @@index([organization_id], map: "fk_chatbot_question_orgnization_id")
+}
+
+model failed_jobs {
+  id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid       String   @unique(map: "failed_jobs_uuid_unique") @db.VarChar(255)
+  connection String   @db.Text
+  queue      String   @db.Text
+  payload    String   @db.LongText
+  exception  String   @db.LongText
+  failed_at  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model jobs {
+  id           BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  queue        String @db.VarChar(255)
+  payload      String @db.LongText
+  attempts     Int    @db.UnsignedTinyInt
+  reserved_at  Int?   @db.UnsignedInt
+  available_at Int    @db.UnsignedInt
+  created_at   Int    @db.UnsignedInt
+
+  @@index([queue], map: "jobs_queue_index")
+}
+
+model migrations {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  migration  String    @db.VarChar(255)
+  batch      Int
+  is_active  Boolean?  @default(true)
+  created_at DateTime? @db.DateTime(0)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model model_has_permissions {
+  permission_id Int         @db.UnsignedInt
+  model_type    String      @db.VarChar(255)
+  model_id      Int         @db.UnsignedInt
+  permissions   permissions @relation(fields: [permission_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "model_has_permissions_permission_id_foreign")
+
+  @@index([permission_id], map: "model_has_permissions_permission_id_foreign_idx")
+  @@ignore
+}
+
+model model_has_roles {
+  role_id    Int       @db.UnsignedInt
+  model_type String    @db.VarChar(255)
+  model_id   Int       @db.UnsignedInt
+  is_active  Boolean?
+  created_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+  roles      roles     @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "model_has_roles_role_id_foreign")
+
+  @@id([role_id, model_id, model_type])
+  @@index([model_type], map: "model_has_roles_model_id_model_type_index")
+}
+
+model notifications {
+  id                                          Int           @id @default(autoincrement())
+  type                                        String        @db.VarChar(255)
+  notifiable_type                             String        @db.VarChar(255)
+  notifiable_id                               Int           @db.UnsignedInt
+  data                                        String        @db.Text
+  is_seen                                     Int?          @db.TinyInt
+  read_at                                     DateTime?     @db.Timestamp(0)
+  created_at                                  DateTime?     @db.Timestamp(0)
+  updated_at                                  DateTime?     @db.Timestamp(0)
+  organization_id                             Int           @db.UnsignedInt
+  user_id                                     Int?          @db.UnsignedInt
+  is_active                                   Boolean?      @default(true)
+  deleted_at                                  DateTime?     @db.DateTime(0)
+  sender_user_id                              Int?          @db.UnsignedInt
+  receiver_user_id                            Int?          @db.UnsignedInt
+  organizations                               organizations @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_notification_organization_id")
+  users_notifications_receiver_user_idTousers users?        @relation("notifications_receiver_user_idTousers", fields: [receiver_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_notification_receiver_user_id")
+  users_notifications_sender_user_idTousers   users?        @relation("notifications_sender_user_idTousers", fields: [sender_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_notification_sender_user_id")
+  users                                       users?        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_notification_user_id")
+
+  @@index([notifiable_type, notifiable_id], map: "notifications_notifiable_type_notifiable_id_index")
+  @@index([organization_id], map: "fk_notification_organization_id")
+  @@index([user_id], map: "fk_notification_user_id_idx")
+  @@index([receiver_user_id], map: "fk_notification_receiver_user_id_idx")
+  @@index([sender_user_id], map: "fk_notification_sender_user_id_idx")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model password_resets {
+  email      String    @db.VarChar(255)
+  token      String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+  is_active  Boolean?  @default(true)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+
+  @@index([email], map: "password_resets_email_index")
+  @@ignore
+}
+
+model permissions {
+  id                    Int                     @id @default(autoincrement()) @db.UnsignedInt
+  name                  String                  @db.VarChar(255)
+  guard_name            String                  @db.VarChar(255)
+  created_at            DateTime?               @db.Timestamp(0)
+  updated_at            DateTime?               @db.Timestamp(0)
+  is_active             Boolean?                @default(true)
+  deleted_at            DateTime?               @db.DateTime(0)
+  model_has_permissions model_has_permissions[] @ignore
+  role_has_permissions  role_has_permissions[] @ignore
+
+  @@unique([name, guard_name], map: "permissions_name_guard_name_unique")
+}
+
+model personal_access_tokens {
+  id             BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  tokenable_type String    @db.VarChar(255)
+  tokenable_id   BigInt    @db.UnsignedBigInt
+  name           String    @db.VarChar(255)
+  token          String    @unique(map: "personal_access_tokens_token_unique") @db.VarChar(64)
+  abilities      String?   @db.Text
+  last_used_at   DateTime? @db.Timestamp(0)
+  created_at     DateTime? @db.Timestamp(0)
+  updated_at     DateTime? @db.Timestamp(0)
+  is_active      Boolean?  @default(true)
+  deleted_at     DateTime? @db.DateTime(0)
+
+  @@index([tokenable_type, tokenable_id], map: "personal_access_tokens_tokenable_type_tokenable_id_index")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model role_has_permissions {
+  permission_id Int         @db.UnsignedInt
+  role_id       Int         @db.UnsignedInt
+  deleted_at    DateTime?   @db.DateTime(0)
+  created_at    DateTime?   @db.DateTime(0)
+  permissions   permissions @relation(fields: [permission_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "role_has_permissions_permission_id_foreign")
+  roles         roles       @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "role_has_permissions_role_id_foreign")
+
+  @@index([permission_id], map: "role_has_permissions_permission_id_foreign_idx")
+  @@index([role_id], map: "role_has_permissions_role_id_foreign_idx")
+  @@ignore
+}
+
+model roles {
+  id                   Int                    @id @default(autoincrement()) @db.UnsignedInt
+  name                 String                 @db.VarChar(255)
+  guard_name           String                 @db.VarChar(255)
+  created_at           DateTime?              @db.Timestamp(0)
+  updated_at           DateTime?              @db.Timestamp(0)
+  deleted_at           DateTime?              @db.DateTime(0)
+  model_has_roles      model_has_roles[]
+  role_has_permissions role_has_permissions[] @ignore
+  users                users[]
+
+  @@unique([name, guard_name], map: "roles_name_guard_name_unique")
+}
+
+model telescope_entries {
+  sequence                BigInt                   @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid                    String                   @unique(map: "telescope_entries_uuid_unique") @db.Char(36)
+  batch_id                String                   @db.Char(36)
+  family_hash             String?                  @db.VarChar(255)
+  should_display_on_index Boolean                  @default(true)
+  type                    String                   @db.VarChar(20)
+  content                 String                   @db.LongText
+  created_at              DateTime?                @db.DateTime(0)
+  is_active               Boolean?                 @default(true)
+  telescope_entries_tags  telescope_entries_tags[] @ignore
+
+  @@index([batch_id], map: "telescope_entries_batch_id_index")
+  @@index([created_at], map: "telescope_entries_created_at_index")
+  @@index([family_hash], map: "telescope_entries_family_hash_index")
+  @@index([type, should_display_on_index], map: "telescope_entries_type_should_display_on_index_index")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model telescope_entries_tags {
+  entry_uuid        String            @db.Char(36)
+  tag               String            @db.VarChar(255)
+  is_active         Boolean?          @default(true)
+  telescope_entries telescope_entries @relation(fields: [entry_uuid], references: [uuid], onDelete: Cascade, onUpdate: NoAction, map: "telescope_entries_tags_entry_uuid_foreign")
+
+  @@index([entry_uuid, tag], map: "telescope_entries_tags_entry_uuid_tag_index")
+  @@index([tag], map: "telescope_entries_tags_tag_index")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model telescope_monitoring {
+  tag       String   @db.VarChar(255)
+  is_active Boolean? @default(true)
+
+  @@ignore
+}
+
+model availabilities {
+  id          Int           @id @default(autoincrement()) @db.UnsignedInt
+  title       String        @unique(map: "availabilities_title_unique") @db.VarChar(255)
+  created_at  DateTime?     @db.Timestamp(0)
+  updated_at  DateTime?     @db.Timestamp(0)
+  deleted_at  DateTime?     @db.DateTime(0)
+  is_active   Boolean?      @default(true)
+  attachments attachments[]
+  badges      badges[]
+  contents    contents[]
+}
+
+model blocks {
+  id                 Int              @id @default(autoincrement()) @db.UnsignedInt
+  title              String           @db.VarChar(255)
+  is_instructor_only Boolean
+  description        String           @db.Text
+  sequence_no        Int?
+  content_type_id    Int              @db.UnsignedInt
+  instructor_id      Int              @db.UnsignedInt
+  created_at         DateTime?        @db.Timestamp(0)
+  updated_at         DateTime?        @db.Timestamp(0)
+  is_active          Boolean?         @default(true)
+  deleted_at         DateTime?        @db.DateTime(0)
+  content_types      content_types    @relation(fields: [content_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "blocks_content_type_id_foreign")
+  users              users            @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "blocks_instructor_id_foreign")
+  content_blocks     content_blocks[]
+
+  @@index([content_type_id], map: "blocks_content_type_id_foreign")
+  @@index([instructor_id], map: "blocks_instructor_id_foreign")
+}
+
+model class_types {
+  id                              Int                               @id @default(autoincrement()) @db.UnsignedInt
+  name                            String                            @unique(map: "class_types_name_unique") @db.VarChar(255)
+  created_at                      DateTime?                         @db.Timestamp(0)
+  updated_at                      DateTime?                         @db.Timestamp(0)
+  is_active                       Boolean?                          @default(true)
+  deleted_at                      DateTime?                         @db.DateTime(0)
+  content_module_segment_sessions content_module_segment_sessions[]
+  content_module_segments         content_module_segments[]
+}
+
+model content_blocks {
+  id            Int       @id @default(autoincrement()) @db.UnsignedInt
+  block_id      Int       @db.UnsignedInt
+  content_id    Int       @db.UnsignedInt
+  instructor_id Int       @db.UnsignedInt
+  created_at    DateTime? @db.Timestamp(0)
+  updated_at    DateTime? @db.Timestamp(0)
+  is_active     Boolean?  @default(true)
+  deleted_at    DateTime? @db.DateTime(0)
+  blocks        blocks    @relation(fields: [block_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "content_blocks_block_id_foreign")
+  contents      contents  @relation(fields: [content_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_blocks_content_id_foreign")
+  users         users     @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_blocks_instructor_id_foreign")
+
+  @@index([block_id], map: "content_blocks_block_id_foreign")
+  @@index([content_id], map: "content_blocks_content_id_foreign")
+  @@index([instructor_id], map: "content_blocks_instructor_id_foreign")
+}
+
+model content_interactive_segments {
+  id                                                         Int                                    @id @default(autoincrement()) @db.UnsignedInt
+  session_id                                                 Int?                                   @db.UnsignedInt
+  content_id                                                 Int                                    @db.UnsignedInt
+  interactive_id                                             Int                                    @db.UnsignedInt
+  instructor_id                                              Int                                    @db.UnsignedInt
+  start_date                                                 DateTime?                              @db.Date
+  end_date                                                   DateTime?                              @db.Date
+  is_assesment                                               Boolean?
+  segment_points                                             Decimal?                               @db.Decimal(3, 2)
+  is_quiz_graded                                             Boolean?
+  is_quiz_offiline                                           Boolean?
+  created_at                                                 DateTime?                              @db.Timestamp(0)
+  updated_at                                                 DateTime?                              @db.Timestamp(0)
+  is_active                                                  Boolean?                               @default(true)
+  deleted_at                                                 DateTime?                              @db.DateTime(0)
+  content_interactive_segment_sessions                       content_interactive_segment_sessions[]
+  contents                                                   contents                               @relation(fields: [content_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "content_interactive_segments_content_id_foreign")
+  users                                                      users                                  @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_interactive_segments_instructor_id_foreign")
+  interactives                                               interactives                           @relation(fields: [interactive_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_interactive_segments_interactive_id_foreign")
+  contents_content_interactive_segments_session_idTocontents contents?                              @relation("content_interactive_segments_session_idTocontents", fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "content_interactive_segments_session_id_foreign")
+
+  @@index([content_id], map: "content_interactive_segments_content_id_foreign")
+  @@index([instructor_id], map: "content_interactive_segments_instructor_id_foreign")
+  @@index([interactive_id], map: "content_interactive_segments_interactive_id_foreign")
+  @@index([session_id], map: "content_interactive_segments_session_id_foreign_idx")
+}
+
+model content_module_segment_activities {
+  id                                                                       Int                     @id @default(autoincrement()) @db.UnsignedInt
+  content_module_segment_id                                                Int                     @db.UnsignedInt
+  content_activity_id                                                      Int                     @db.UnsignedInt
+  content_id                                                               Int                     @db.UnsignedInt
+  session_id                                                               Int?                    @db.UnsignedInt
+  instructor_id                                                            Int                     @db.UnsignedInt
+  created_at                                                               DateTime?               @db.Timestamp(0)
+  updated_at                                                               DateTime?               @db.Timestamp(0)
+  is_active                                                                Boolean?                @default(true)
+  deleted_at                                                               DateTime?               @db.DateTime(0)
+  contents_content_module_segment_activities_content_activity_idTocontents contents                @relation("content_module_segment_activities_content_activity_idTocontents", fields: [content_activity_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "content_module_segment_activities_content_activity_id_foreign")
+  contents_content_module_segment_activities_content_idTocontents          contents                @relation("content_module_segment_activities_content_idTocontents", fields: [content_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_module_segment_activities_content_id_foreign")
+  content_module_segments                                                  content_module_segments @relation(fields: [content_module_segment_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "content_module_segment_activities_content_module_segment_id_fk")
+  users                                                                    users                   @relation(fields: [instructor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "content_module_segment_activities_instructor_id_foreign")
+  contents_content_module_segment_activities_session_idTocontents          contents?               @relation("content_module_segment_activities_session_idTocontents", fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_module_segment_activities_session_id_foreign")
+
+  @@index([content_activity_id], map: "content_module_segment_activities_content_activity_id_foreign")
+  @@index([content_id], map: "content_module_segment_activities_content_id_foreign")
+  @@index([content_module_segment_id], map: "content_module_segment_activities_content_module_segment_id_fk")
+  @@index([instructor_id], map: "content_module_segment_activities_instructor_id_foreign")
+  @@index([session_id], map: "content_module_segment_activities_session_id_foreign_idx")
+}
+
+model content_module_segments {
+  id                                                    Int                                 @id @default(autoincrement()) @db.UnsignedInt
+  module                                                String                              @db.VarChar(255)
+  module_segment_type_id                                Int                                 @db.UnsignedInt
+  module_segment_delivery_id                            Int                                 @db.UnsignedInt
+  content_id                                            Int                                 @db.UnsignedInt
+  session_id                                            Int?                                @db.UnsignedInt
+  instructor_id                                         Int                                 @db.UnsignedInt
+  class_type_id                                         Int?                                @db.UnsignedInt
+  start_date                                            DateTime?                           @db.Date
+  end_date                                              DateTime?                           @db.Date
+  segment_points                                        Decimal?                            @db.Decimal(3, 2)
+  sequence_no                                           Int?
+  created_at                                            DateTime?                           @db.Timestamp(0)
+  updated_at                                            DateTime?                           @db.Timestamp(0)
+  is_active                                             Boolean?                            @default(true)
+  deleted_at                                            DateTime?                           @db.DateTime(0)
+  content_module_segment_activities                     content_module_segment_activities[]
+  content_module_segment_sessions                       content_module_segment_sessions[]
+  contents                                              contents                            @relation(fields: [content_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_module_segments_content_id_foreign")
+  users                                                 users                               @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_module_segments_instructor_id_foreign")
+  class_types                                           class_types?                        @relation(fields: [class_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_module_segments_module_class_type_id_foreign")
+  module_segment_deliveries                             module_segment_deliveries           @relation(fields: [module_segment_delivery_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_module_segments_module_segment_delivery_id_foreign")
+  module_segment_types                                  module_segment_types                @relation(fields: [module_segment_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_module_segments_module_segment_type_id_foreign")
+  contents_content_module_segments_session_idTocontents contents?                           @relation("content_module_segments_session_idTocontents", fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_module_segments_session_id_foreign")
+
+  @@index([content_id], map: "content_module_segments_content_id_foreign")
+  @@index([instructor_id], map: "content_module_segments_instructor_id_foreign")
+  @@index([module_segment_delivery_id], map: "content_module_segments_module_segment_delivery_id_foreign")
+  @@index([module_segment_type_id], map: "content_module_segments_module_segment_type_id_foreign")
+  @@index([class_type_id], map: "content_module_segments_module_class_type_id_foreign_idx")
+  @@index([session_id], map: "content_module_segments_session_id_foreign_idx")
+}
+
+model content_session_details {
+  id                 Int              @id @default(autoincrement()) @db.UnsignedInt
+  session_type_id    Int              @db.UnsignedInt
+  start_date         DateTime         @db.Date
+  end_date           DateTime         @db.Date
+  price              Decimal          @db.Decimal(4, 2)
+  content_session_id Int              @db.UnsignedInt
+  created_at         DateTime?        @db.Timestamp(0)
+  updated_at         DateTime?        @db.Timestamp(0)
+  is_active          Boolean?         @default(true)
+  deleted_at         DateTime?        @db.DateTime(0)
+  content_sessions   content_sessions @relation(fields: [content_session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_session_details_content_session_id_foreign")
+  session_types      session_types    @relation(fields: [session_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_session_details_session_type_id_foreign")
+
+  @@index([content_session_id], map: "content_session_details_content_session_id_foreign")
+  @@index([session_type_id], map: "content_session_details_session_type_id_foreign")
+}
+
+model content_sessions {
+  id                                             Int                                  @id @default(autoincrement()) @db.UnsignedInt
+  is_published                                   Boolean
+  is_pd_session                                  Boolean?                             @default(false)
+  course_id                                      Int                                  @db.UnsignedInt
+  session_id                                     Int                                  @db.UnsignedInt
+  created_at                                     DateTime?                            @db.Timestamp(0)
+  updated_at                                     DateTime?                            @db.Timestamp(0)
+  is_active                                      Boolean?                             @default(true)
+  deleted_at                                     DateTime?                            @db.DateTime(0)
+  content_session_details                        content_session_details[]
+  contents_content_sessions_course_idTocontents  contents                             @relation("content_sessions_course_idTocontents", fields: [course_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_sessions_course_id_foreign")
+  contents_content_sessions_session_idTocontents contents                             @relation("content_sessions_session_idTocontents", fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_sessions_session_id_foreign")
+  instructor_activities                          instructor_activities[]
+  instructor_courses                             instructor_courses[]
+  instructor_interactives                        instructor_interactives[]
+  instructor_sessions                            instructor_sessions[]
+  interactive_assignment_results                 interactive_assignment_results[]
+  interactive_assignment_submissions             interactive_assignment_submissions[]
+  interactive_quest_submissions                  interactive_quest_submissions[]
+  interactive_quiz_results                       interactive_quiz_results[]
+  learner_courses                                learner_courses[]
+  smartdesks                                     smartdesks[]
+
+  @@index([course_id], map: "content_sessions_course_id_foreign")
+  @@index([session_id], map: "content_sessions_session_id_foreign")
+}
+
+model content_skills {
+  id           Int        @id @default(autoincrement()) @db.UnsignedInt
+  content_id   Int        @db.UnsignedInt
+  skill_id     Int        @db.UnsignedInt
+  sub_skill_id Int        @db.UnsignedInt
+  skill_points Int
+  created_at   DateTime?  @db.Timestamp(0)
+  updated_at   DateTime?  @db.Timestamp(0)
+  is_active    Boolean?   @default(true)
+  deleted_at   DateTime?  @db.DateTime(0)
+  contents     contents   @relation(fields: [content_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_skills_content_id_foreign")
+  skills       skills     @relation(fields: [skill_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_skills_skill_id_foreign")
+  sub_skills   sub_skills @relation(fields: [sub_skill_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_skills_sub_skill_id_foreign")
+
+  @@index([content_id], map: "content_skills_content_id_foreign")
+  @@index([skill_id], map: "content_skills_skill_id_foreign")
+  @@index([sub_skill_id], map: "content_skills_sub_skill_id_foreign")
+}
+
+model content_standards {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  content_id  Int       @db.UnsignedInt
+  standard_id Int       @db.UnsignedInt
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+  is_active   Boolean?  @default(true)
+  deleted_at  DateTime? @db.DateTime(0)
+  contents    contents  @relation(fields: [content_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_standards_content_id_foreign")
+  standards   standards @relation(fields: [standard_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_standards_standard_id_foreign")
+
+  @@index([content_id], map: "content_standards_content_id_foreign")
+  @@index([standard_id], map: "content_standards_standard_id_foreign")
+}
+
+model content_subject_disciplines {
+  id                    Int                 @id @default(autoincrement()) @db.UnsignedInt
+  content_id            Int                 @db.UnsignedInt
+  subject_id            Int                 @db.UnsignedInt
+  subject_discipline_id Int                 @db.UnsignedInt
+  created_at            DateTime?           @db.Timestamp(0)
+  updated_at            DateTime?           @db.Timestamp(0)
+  is_active             Boolean?            @default(true)
+  deleted_at            DateTime?           @db.DateTime(0)
+  contents              contents            @relation(fields: [content_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_subject_disciplines_content_id_foreign")
+  subject_disciplines   subject_disciplines @relation(fields: [subject_discipline_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_subject_disciplines_subject_discipline_id_foreign")
+  subjects              subjects            @relation(fields: [subject_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_subject_disciplines_subject_id_foreign")
+
+  @@index([content_id], map: "content_subject_disciplines_content_id_foreign")
+  @@index([subject_discipline_id], map: "content_subject_disciplines_subject_discipline_id_foreign")
+  @@index([subject_id], map: "content_subject_disciplines_subject_id_foreign")
+}
+
+model content_types {
+  id         Int        @id @default(autoincrement()) @db.UnsignedInt
+  title      String     @unique(map: "content_types_title_unique") @db.VarChar(255)
+  created_at DateTime?  @db.Timestamp(0)
+  updated_at DateTime?  @db.Timestamp(0)
+  is_active  Boolean?   @default(true)
+  deleted_at DateTime?  @db.DateTime(0)
+  blocks     blocks[]
+  contents   contents[]
+}
+
+model content_vocabularies {
+  id                    Int       @id @default(autoincrement()) @db.UnsignedInt
+  vocabulary            String    @db.VarChar(255)
+  vocabulary_definition String    @db.Text
+  content_id            Int       @db.UnsignedInt
+  created_at            DateTime? @db.Timestamp(0)
+  updated_at            DateTime? @db.Timestamp(0)
+  is_active             Boolean?  @default(true)
+  deleted_at            DateTime? @db.DateTime(0)
+  contents              contents  @relation(fields: [content_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "content_vocabularies_content_id_foreign")
+
+  @@index([content_id], map: "content_vocabularies_content_id_foreign")
+}
+
+model contents {
+  id                                                                                                Int                                    @id @default(autoincrement()) @db.UnsignedInt
+  title                                                                                             String                                 @db.VarChar(255)
+  content_description                                                                               String                                 @db.Text
+  availability_id                                                                                   Int                                    @db.UnsignedInt
+  working_type_id                                                                                   Int?                                   @db.UnsignedInt
+  duration                                                                                          Int?
+  from_grade_id                                                                                     Int                                    @db.UnsignedInt
+  to_grade_id                                                                                       Int                                    @db.UnsignedInt
+  from_age                                                                                          Int
+  to_age                                                                                            Int
+  isDraft                                                                                           Boolean?
+  content_type_id                                                                                   Int                                    @db.UnsignedInt
+  instructor_id                                                                                     Int                                    @db.UnsignedInt
+  is_active                                                                                         Boolean?
+  leanerslot                                                                                        Int?
+  organization_id                                                                                   Int?                                   @db.UnsignedInt
+  created_at                                                                                        DateTime?                              @db.Timestamp(0)
+  updated_at                                                                                        DateTime?                              @db.Timestamp(0)
+  deleted_at                                                                                        DateTime?                              @db.DateTime(0)
+  created_by                                                                                        Int?                                   @db.UnsignedInt
+  badge_courses                                                                                     badge_courses[]
+  content_blocks                                                                                    content_blocks[]
+  content_interactive_segment_sessions                                                              content_interactive_segment_sessions[]
+  content_interactive_segments                                                                      content_interactive_segments[]
+  content_interactive_segments_content_interactive_segments_session_idTocontents                    content_interactive_segments[]         @relation("content_interactive_segments_session_idTocontents")
+  content_module_segment_activities_content_module_segment_activities_content_activity_idTocontents content_module_segment_activities[]    @relation("content_module_segment_activities_content_activity_idTocontents")
+  content_module_segment_activities_content_module_segment_activities_content_idTocontents          content_module_segment_activities[]    @relation("content_module_segment_activities_content_idTocontents")
+  content_module_segment_activities_content_module_segment_activities_session_idTocontents          content_module_segment_activities[]    @relation("content_module_segment_activities_session_idTocontents")
+  content_module_segment_sessions                                                                   content_module_segment_sessions[]
+  content_module_segment_time_record_content_module_segment_time_record_activity_idTocontents       content_module_segment_time_record[]   @relation("content_module_segment_time_record_activity_idTocontents")
+  content_module_segment_time_record_content_module_segment_time_record_session_idTocontents        content_module_segment_time_record[]   @relation("content_module_segment_time_record_session_idTocontents")
+  content_module_segments                                                                           content_module_segments[]
+  content_module_segments_content_module_segments_session_idTocontents                              content_module_segments[]              @relation("content_module_segments_session_idTocontents")
+  content_resources                                                                                 content_resources[]
+  content_sessions_content_sessions_course_idTocontents                                             content_sessions[]                     @relation("content_sessions_course_idTocontents")
+  content_sessions_content_sessions_session_idTocontents                                            content_sessions[]                     @relation("content_sessions_session_idTocontents")
+  content_skills                                                                                    content_skills[]
+  content_standards                                                                                 content_standards[]
+  content_subject_disciplines                                                                       content_subject_disciplines[]
+  content_vocabularies                                                                              content_vocabularies[]
+  availabilities                                                                                    availabilities                         @relation(fields: [availability_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contents_availability_id_foreign")
+  content_types                                                                                     content_types                          @relation(fields: [content_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contents_content_type_id_foreign")
+  grades_contents_from_grade_idTogrades                                                             grades                                 @relation("contents_from_grade_idTogrades", fields: [from_grade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contents_from_grade_id_foreign")
+  users                                                                                             users                                  @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contents_instructor_id_foreign")
+  grades_contents_to_grade_idTogrades                                                               grades                                 @relation("contents_to_grade_idTogrades", fields: [to_grade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contents_to_grade_id_foreign")
+  working_types                                                                                     working_types?                         @relation(fields: [working_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contents_working_type_id_foreign")
+  organizations                                                                                     organizations?                         @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_content_organization_id")
+  users_contents_created_byTousers                                                                  users?                                 @relation("contents_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_contents_created_by")
+  instructor_activities                                                                             instructor_activities[]
+  instructor_courses                                                                                instructor_courses[]
+  instructor_sessions                                                                               instructor_sessions[]
+  interactive_assignment_results                                                                    interactive_assignment_results[]
+  interactive_assignment_submissions                                                                interactive_assignment_submissions[]
+  interactive_quest_submissions                                                                     interactive_quest_submissions[]
+  interactive_quiz_results                                                                          interactive_quiz_results[]
+  learner_badges                                                                                    learner_badges[]
+  learner_courses                                                                                   learner_courses[]
+  poll_questions                                                                                    poll_questions[]
+  smartdesk_sessions                                                                                smartdesk_sessions[]
+  smartdesks                                                                                        smartdesks[]
+
+  @@index([availability_id], map: "contents_availability_id_foreign")
+  @@index([content_type_id], map: "contents_content_type_id_foreign")
+  @@index([from_grade_id], map: "contents_from_grade_id_foreign")
+  @@index([instructor_id], map: "contents_instructor_id_foreign")
+  @@index([to_grade_id], map: "contents_to_grade_id_foreign")
+  @@index([working_type_id], map: "contents_working_type_id_foreign")
+  @@index([organization_id], map: "fk_content_organization_id")
+  @@index([created_by], map: "fk_contents_created_by")
+}
+
+model interactives {
+  id                                                                    Int                                    @id @default(autoincrement()) @db.UnsignedInt
+  title                                                                 String                                 @db.VarChar(255)
+  description                                                           String                                 @db.Text
+  duration                                                              Int?
+  from_grade_id                                                         Int                                    @db.UnsignedInt
+  to_grade_id                                                           Int                                    @db.UnsignedInt
+  interactive_type_id                                                   Int                                    @db.UnsignedInt
+  instructor_id                                                         Int                                    @db.UnsignedInt
+  is_duplicate                                                          Boolean?                               @default(false)
+  is_active                                                             Boolean?
+  isDraft                                                               Boolean?
+  created_at                                                            DateTime?                              @db.Timestamp(0)
+  updated_at                                                            DateTime?                              @db.Timestamp(0)
+  organization_id                                                       Int?                                   @db.UnsignedInt
+  deleted_at                                                            DateTime?                              @db.DateTime(0)
+  created_by                                                            Int?                                   @db.UnsignedInt
+  content_interactive_segment_sessions                                  content_interactive_segment_sessions[]
+  content_interactive_segments                                          content_interactive_segments[]
+  instructor_interactives                                               instructor_interactives[]
+  interactive_assignment_submissions                                    interactive_assignment_submissions[]
+  interactive_quest_submissions                                         interactive_quest_submissions[]
+  interactive_quiz_results                                              interactive_quiz_results[]
+  interactive_subjects                                                  interactive_subjects[]
+  organizations                                                         organizations?                         @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_interactive_organization_id")
+  users_interactives_created_byTousers                                  users?                                 @relation("interactives_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_interactives_created_by")
+  grades                                                                grades                                 @relation(fields: [from_grade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "interactives_from_grade_id_foreign")
+  users                                                                 users                                  @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "interactives_instructor_id_foreign")
+  interactive_types_interactives_interactive_type_idTointeractive_types interactive_types                      @relation("interactives_interactive_type_idTointeractive_types", fields: [interactive_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "interactives_interactive_type_id_foreign")
+  interactive_types_interactives_to_grade_idTointeractive_types         grades                                 @relation("interactives_to_grade_idTointeractive_types", fields: [to_grade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "interactives_to_grade_id_foreign")
+
+  @@index([from_grade_id], map: "interactives_from_grade_id_foreign")
+  @@index([instructor_id], map: "interactives_instructor_id_foreign")
+  @@index([interactive_type_id], map: "interactives_interactive_type_id_foreign")
+  @@index([to_grade_id], map: "interactives_to_grade_id_foreign")
+  @@index([organization_id], map: "fk_interactive_organization_id")
+  @@index([created_by], map: "fk_interactives_created_by")
+}
+
+model module_segment_deliveries {
+  id                      Int                       @id @default(autoincrement()) @db.UnsignedInt
+  title                   String                    @unique(map: "module_segment_deliveries_title_unique") @db.VarChar(255)
+  created_at              DateTime?                 @db.Timestamp(0)
+  updated_at              DateTime?                 @db.Timestamp(0)
+  is_active               Boolean?                  @default(true)
+  deleted_at              DateTime?                 @db.DateTime(0)
+  content_module_segments content_module_segments[]
+}
+
+model module_segment_types {
+  id                      Int                       @id @default(autoincrement()) @db.UnsignedInt
+  title                   String                    @unique(map: "module_segment_types_title_unique") @db.VarChar(255)
+  created_at              DateTime?                 @db.Timestamp(0)
+  updated_at              DateTime?                 @db.Timestamp(0)
+  is_active               Boolean?                  @default(true)
+  deleted_at              DateTime?                 @db.DateTime(0)
+  content_module_segments content_module_segments[]
+}
+
+model question_interactive_subjects {
+  id                     Int                  @id @default(autoincrement()) @db.UnsignedInt
+  question_id            Int                  @db.UnsignedInt
+  interactive_subject_id Int                  @db.UnsignedInt
+  created_at             DateTime?            @db.Timestamp(0)
+  updated_at             DateTime?            @db.Timestamp(0)
+  is_active              Boolean?             @default(true)
+  deleted_at             DateTime?            @db.DateTime(0)
+  interactive_subjects   interactive_subjects @relation(fields: [interactive_subject_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "question_interactive_subjects_interactive_subject_id_foreign")
+  questions              questions            @relation(fields: [question_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "question_interactive_subjects_question_id_foreign")
+
+  @@index([interactive_subject_id], map: "question_interactive_subjects_interactive_subject_id_foreign")
+  @@index([question_id], map: "question_interactive_subjects_question_id_foreign")
+}
+
+model session_types {
+  id                      Int                       @id @default(autoincrement()) @db.UnsignedInt
+  name                    String                    @unique(map: "session_types_name_unique") @db.VarChar(255)
+  created_at              DateTime?                 @db.Timestamp(0)
+  updated_at              DateTime?                 @db.Timestamp(0)
+  is_active               Boolean?                  @default(true)
+  deleted_at              DateTime?                 @db.DateTime(0)
+  content_session_details content_session_details[]
+}
+
+model skills {
+  id              Int               @id @default(autoincrement()) @db.UnsignedInt
+  title           String            @unique(map: "skills_title_unique") @db.VarChar(255)
+  created_at      DateTime?         @db.Timestamp(0)
+  updated_at      DateTime?         @db.Timestamp(0)
+  is_active       Boolean?          @default(true)
+  deleted_at      DateTime?         @db.DateTime(0)
+  content_skills  content_skills[]
+  learner_skills  learner_skills[]
+  question_skills question_skills[]
+  sub_skills      sub_skills[]
+}
+
+model standard_levels {
+  id                Int                 @id @default(autoincrement()) @db.UnsignedInt
+  title             String              @db.VarChar(255)
+  standard_type_id  Int                 @db.UnsignedInt
+  created_at        DateTime?           @db.Timestamp(0)
+  updated_at        DateTime?           @db.Timestamp(0)
+  is_active         Boolean?            @default(true)
+  deleted_at        DateTime?           @db.DateTime(0)
+  standard_types    standard_types      @relation(fields: [standard_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "standard_levels_standard_type_id_foreign")
+  standard_subjects standard_subjects[]
+  standards         standards[]
+
+  @@index([standard_type_id], map: "standard_levels_standard_type_id_foreign")
+}
+
+model standard_subjects {
+  id                Int             @id @default(autoincrement()) @db.UnsignedInt
+  title             String          @db.VarChar(255)
+  standard_level_id Int             @db.UnsignedInt
+  created_at        DateTime?       @db.Timestamp(0)
+  updated_at        DateTime?       @db.Timestamp(0)
+  is_active         Boolean?        @default(true)
+  deleted_at        DateTime?       @db.DateTime(0)
+  standard_levels   standard_levels @relation(fields: [standard_level_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "standard_subjects_standard_level_id_foreign")
+  standards         standards[]
+
+  @@index([standard_level_id], map: "standard_subjects_standard_level_id_foreign")
+}
+
+model standard_types {
+  id              Int               @id @default(autoincrement()) @db.UnsignedInt
+  title           String            @unique(map: "standard_types_title_unique") @db.VarChar(255)
+  created_at      DateTime?         @db.Timestamp(0)
+  updated_at      DateTime?         @db.Timestamp(0)
+  is_active       Boolean?          @default(true)
+  deleted_at      DateTime?         @db.DateTime(0)
+  standard_levels standard_levels[]
+  standards       standards[]
+}
+
+model standards {
+  id                  Int                 @id @default(autoincrement()) @db.UnsignedInt
+  title               String              @db.VarChar(255)
+  description         String?             @db.Text
+  standard_type_id    Int                 @db.UnsignedInt
+  standard_level_id   Int                 @db.UnsignedInt
+  standard_subject_id Int                 @db.UnsignedInt
+  created_at          DateTime?           @db.Timestamp(0)
+  updated_at          DateTime?           @db.Timestamp(0)
+  is_active           Boolean?            @default(true)
+  deleted_at          DateTime?           @db.DateTime(0)
+  content_standards   content_standards[]
+  standard_levels     standard_levels     @relation(fields: [standard_level_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "standards_standard_level_id_foreign")
+  standard_subjects   standard_subjects   @relation(fields: [standard_subject_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "standards_standard_subject_id_foreign")
+  standard_types      standard_types      @relation(fields: [standard_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "standards_standard_type_id_foreign")
+
+  @@index([standard_level_id], map: "standards_standard_level_id_foreign")
+  @@index([standard_subject_id], map: "standards_standard_subject_id_foreign")
+  @@index([standard_type_id], map: "standards_standard_type_id_foreign")
+}
+
+model sub_skills {
+  id              Int               @id @default(autoincrement()) @db.UnsignedInt
+  title           String            @db.VarChar(255)
+  skill_id        Int               @db.UnsignedInt
+  created_at      DateTime?         @db.Timestamp(0)
+  updated_at      DateTime?         @db.Timestamp(0)
+  is_active       Boolean?          @default(true)
+  deleted_at      DateTime?         @db.DateTime(0)
+  content_skills  content_skills[]
+  question_skills question_skills[]
+  skills          skills            @relation(fields: [skill_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "sub_skills_skill_id_foreign")
+
+  @@index([skill_id], map: "sub_skills_skill_id_foreign")
+}
+
+model subject_disciplines {
+  id                          Int                           @id @default(autoincrement()) @db.UnsignedInt
+  name                        String                        @db.VarChar(255)
+  subject_id                  Int                           @db.UnsignedInt
+  created_at                  DateTime?                     @db.Timestamp(0)
+  updated_at                  DateTime?                     @db.Timestamp(0)
+  is_active                   Boolean?                      @default(true)
+  deleted_at                  DateTime?                     @db.DateTime(0)
+  content_subject_disciplines content_subject_disciplines[]
+  subjects                    subjects                      @relation(fields: [subject_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "subject_disciplines_subject_id_foreign")
+
+  @@index([subject_id], map: "subject_disciplines_subject_id_foreign")
+}
+
+model working_types {
+  id         Int        @id @default(autoincrement()) @db.UnsignedInt
+  title      String     @unique(map: "working_types_title_unique") @db.VarChar(255)
+  created_at DateTime?  @db.Timestamp(0)
+  updated_at DateTime?  @db.Timestamp(0)
+  is_active  Boolean?   @default(true)
+  deleted_at DateTime?  @db.DateTime(0)
+  contents   contents[]
+}
+
+model content_resources {
+  id              Int       @id @default(autoincrement()) @db.UnsignedInt
+  name            String?   @db.VarChar(500)
+  is_viewable     Boolean   @default(false)
+  is_downloadable Boolean   @default(false)
+  content_id      Int       @db.UnsignedInt
+  created_at      DateTime? @db.Timestamp(0)
+  updated_at      DateTime? @db.Timestamp(0)
+  is_active       Boolean?  @default(true)
+  deleted_at      DateTime? @db.DateTime(0)
+  contents        contents  @relation(fields: [content_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk1_content_resources_content_id")
+
+  @@index([content_id], map: "content_resources_content_id_foreign")
+}
+
+model hobbies {
+  id              Int               @id @default(autoincrement()) @db.UnsignedInt
+  title           String            @unique(map: "title_UNIQUE") @db.VarChar(255)
+  created_at      DateTime?         @db.Timestamp(0)
+  updated_at      DateTime?         @db.Timestamp(0)
+  is_active       Boolean?          @default(true)
+  deleted_at      DateTime?         @db.DateTime(0)
+  learner_hobbies learner_hobbies[]
+}
+
+model interactive_assignment_submissions {
+  id                             Int                             @id @default(autoincrement()) @db.UnsignedInt
+  learner_id                     Int                             @db.UnsignedInt
+  course_id                      Int                             @db.UnsignedInt
+  content_session_id             Int?                            @db.UnsignedInt
+  interactive_id                 Int?                            @db.UnsignedInt
+  question_id                    Int                             @db.UnsignedInt
+  answer                         String                          @db.Text
+  is_submitted                   Boolean?                        @db.Bit(1)
+  submission_date                DateTime?                       @db.Date
+  obtained_marks                 Int?
+  total_marks                    Int?
+  organization_id                Int?                            @db.UnsignedInt
+  created_at                     DateTime?                       @db.Timestamp(0)
+  updated_at                     DateTime?                       @db.Timestamp(0)
+  is_active                      Boolean?                        @default(true)
+  deleted_at                     DateTime?                       @db.DateTime(0)
+  assignment_result_id           Int?                            @db.UnsignedInt
+  interactive_assignment_results interactive_assignment_results? @relation(fields: [assignment_result_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_assignment_assignment_submission_id")
+  organizations                  organizations?                  @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_interactive_assignment_submission_organization_id")
+  content_sessions               content_sessions?               @relation(fields: [content_session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "interactive_assignment_submissions_content_session_id_foreign")
+  contents                       contents                        @relation(fields: [course_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "interactive_assignment_submissions_course_id_foreign")
+  interactives                   interactives?                   @relation(fields: [interactive_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "interactive_assignment_submissions_interactive_id_foreign")
+  users                          users                           @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "interactive_assignment_submissions_learner_id_foreign")
+  questions                      questions                       @relation(fields: [question_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "interactive_assignment_submissions_question_id_foreign")
+
+  @@index([content_session_id], map: "interactive_assignment_submissions_content_session_id_foreign")
+  @@index([course_id], map: "interactive_assignment_submissions_course_id_foreign")
+  @@index([learner_id], map: "interactive_assignment_submissions_learner_id_foreign")
+  @@index([question_id], map: "interactive_assignment_submissions_question_id_foreign")
+  @@index([interactive_id], map: "interactive_assignment_submissions_question_interactive_id__idx")
+  @@index([organization_id], map: "fk_interactive_assignment_submission_organization_id")
+  @@index([assignment_result_id], map: "fk_assignment_assignment_submission_id")
+}
+
+model interactive_quiz_submissions {
+  id                         Int                       @id @default(autoincrement()) @db.UnsignedInt
+  question_id                Int                       @db.UnsignedInt
+  question_option_id         Int?                      @db.UnsignedInt
+  is_correct                 Int?                      @db.TinyInt
+  interactive_quiz_result_id Int?                      @db.UnsignedInt
+  is_submitted               Boolean                   @db.Bit(1)
+  submission_date            DateTime?                 @db.Date
+  created_at                 DateTime?                 @db.Timestamp(0)
+  updated_at                 DateTime?                 @db.Timestamp(0)
+  organization_id            Int?                      @db.UnsignedInt
+  is_active                  Boolean?                  @default(true)
+  deleted_at                 DateTime?                 @db.DateTime(0)
+  organizations              organizations?            @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_interactive_quiz_submission_organization_id")
+  questions                  questions                 @relation(fields: [question_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "interactive_quiz_submissions_question_id_foreign")
+  question_options           question_options?         @relation(fields: [question_option_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "interactive_quiz_submissions_question_option_id_foreign")
+  interactive_quiz_results   interactive_quiz_results? @relation(fields: [interactive_quiz_result_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "interactive_quiz_submissions_question_result_id_foreign")
+
+  @@index([question_option_id], map: "interactive_quiz_submissions_question_option_id_foreign")
+  @@index([question_id], map: "interactive_quiz_submissions_question_id_foreign_idx")
+  @@index([interactive_quiz_result_id], map: "interactive_quiz_submissions_question_result_id_foreign_idx")
+  @@index([organization_id], map: "fk_interactive_quiz_submission_organization_id")
+}
+
+model interests {
+  id                Int                 @id @default(autoincrement()) @db.UnsignedInt
+  title             String              @unique(map: "title_UNIQUE") @db.VarChar(255)
+  created_at        DateTime?           @db.Timestamp(0)
+  updated_at        DateTime?           @db.Timestamp(0)
+  is_active         Boolean?            @default(true)
+  deleted_at        DateTime?           @db.DateTime(0)
+  learner_interests learner_interests[]
+}
+
+model learner_courses {
+  id                 Int               @id @default(autoincrement()) @db.UnsignedInt
+  learner_id         Int               @db.UnsignedInt
+  course_id          Int               @db.UnsignedInt
+  content_session_id Int?              @db.UnsignedInt
+  progress           Int?              @default(0)
+  is_active          Boolean?          @default(true)
+  session_time       Int?
+  spend_time         Int?
+  created_at         DateTime?         @db.Timestamp(0)
+  updated_at         DateTime?         @db.Timestamp(0)
+  deleted_at         DateTime?         @db.DateTime(0)
+  content_sessions   content_sessions? @relation(fields: [content_session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "learner_courses_content_session_id_foreign")
+  contents           contents          @relation(fields: [course_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "learner_courses_course_id_foreign")
+  users              users             @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "learner_courses_learner_id_foreign")
+
+  @@index([content_session_id], map: "learner_courses_content_session_id_foreign")
+  @@index([course_id], map: "learner_courses_course_id_foreign")
+  @@index([learner_id], map: "learner_courses_learner_id_foreign")
+}
+
+model learner_hobbies {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  learner_id Int       @db.UnsignedInt
+  hobby_id   Int       @db.UnsignedInt
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+  is_active  Boolean?  @default(true)
+  deleted_at DateTime? @db.DateTime(0)
+  hobbies    hobbies   @relation(fields: [hobby_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "learner_hobbies_hobby_id_foreign")
+  users      users     @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "learner_hobbies_learner_id_foreign")
+
+  @@index([hobby_id], map: "learner_hobbies_hobby_id_foreign")
+  @@index([learner_id], map: "learner_hobbies_learner_id_foreign")
+}
+
+model learner_interests {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  learner_id  Int       @db.UnsignedInt
+  interest_id Int       @db.UnsignedInt
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+  is_active   Boolean?  @default(true)
+  deleted_at  DateTime? @db.DateTime(0)
+  interests   interests @relation(fields: [interest_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "learner_interests_interest_id_foreign")
+  users       users     @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "learner_interests_learner_id_foreign")
+
+  @@index([interest_id], map: "learner_interests_interest_id_foreign")
+  @@index([learner_id], map: "learner_interests_learner_id_foreign")
+}
+
+model smartdesk_types {
+  id         Int          @id @default(autoincrement()) @db.UnsignedInt
+  title      String       @unique(map: "title_UNIQUE") @db.VarChar(255)
+  created_at DateTime?    @db.Timestamp(0)
+  updated_at DateTime?    @db.Timestamp(0)
+  is_active  Boolean?     @default(true)
+  deleted_at DateTime?    @db.DateTime(0)
+  smartdesks smartdesks[]
+}
+
+model smartdesks {
+  id                 Int              @id @default(autoincrement()) @db.UnsignedInt
+  smartdesk_type_id  Int              @db.UnsignedInt
+  learner_id         Int              @db.UnsignedInt
+  course_id          Int              @db.UnsignedInt
+  content_session_id Int              @db.UnsignedInt
+  created_at         DateTime?        @db.Timestamp(0)
+  updated_at         DateTime?        @db.Timestamp(0)
+  organization_id    Int?             @db.UnsignedInt
+  editor_json        String?          @db.Text
+  is_active          Boolean?         @default(true)
+  deleted_at         DateTime?        @db.DateTime(0)
+  organizations      organizations?   @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_smartdesk_organization_id")
+  content_sessions   content_sessions @relation(fields: [content_session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "smartdesks_content_session_id_foreign")
+  contents           contents         @relation(fields: [course_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "smartdesks_course_id_foreign")
+  users              users            @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "smartdesks_learner_id_foreign")
+  smartdesk_types    smartdesk_types  @relation(fields: [smartdesk_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "smartdesks_smartdesk_type_id_foreign")
+
+  @@index([content_session_id], map: "smartdesks_content_session_id_foreign")
+  @@index([course_id], map: "smartdesks_course_id_foreign")
+  @@index([learner_id], map: "smartdesks_learner_id_foreign")
+  @@index([smartdesk_type_id], map: "smartdesks_smartdesk_type_id_foreign")
+  @@index([organization_id], map: "fk_smartdesk_organization_id")
+}
+
+model interactive_quest_submissions {
+  id                 Int               @id @default(autoincrement())
+  learner_id         Int               @db.UnsignedInt
+  course_id          Int               @db.UnsignedInt
+  content_session_id Int?              @db.UnsignedInt
+  interactive_id     Int               @db.UnsignedInt
+  submission_date    DateTime?         @db.Date
+  video_description  String            @db.Text
+  is_submitted       Boolean           @db.Bit(1)
+  organization_id    Int?              @db.UnsignedInt
+  marks              Int?
+  total_marks        Int?
+  is_active          Boolean?          @default(true)
+  created_at         DateTime?         @db.DateTime(0)
+  updated_at         DateTime?         @db.DateTime(0)
+  deleted_at         DateTime?         @db.DateTime(0)
+  content_sessions   content_sessions? @relation(fields: [content_session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_aquest_submission_content_session_id")
+  contents           contents          @relation(fields: [course_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_aquest_submission_course_id")
+  users              users             @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_aquest_submission_leaner_id")
+  interactives       interactives      @relation(fields: [interactive_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_aquest_submission_question_id")
+  organizations      organizations?    @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_interactive_quest_submission_organization_id")
+
+  @@index([content_session_id], map: "fk_aquest_submission_content_session_id")
+  @@index([course_id], map: "fk_aquest_submission_course_id")
+  @@index([learner_id], map: "fk_aquest_submission_leaner_id")
+  @@index([interactive_id], map: "fk_aquest_submission_question_id")
+  @@index([organization_id], map: "fk_interactive_quest_submission_organization_id")
+}
+
+model user_manager {
+  id                                   Int       @id @default(autoincrement())
+  user_id                              Int       @db.UnsignedInt
+  manager_id                           Int       @db.UnsignedInt
+  is_active                            Boolean?  @default(true)
+  created_at                           DateTime? @db.DateTime(0)
+  updated_at                           DateTime? @db.DateTime(0)
+  deleted_at                           DateTime? @db.DateTime(0)
+  users_user_manager_manager_idTousers users     @relation("user_manager_manager_idTousers", fields: [manager_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_manager_manager_id")
+  users_user_manager_user_idTousers    users     @relation("user_manager_user_idTousers", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_manager_user_id")
+
+  @@index([manager_id], map: "fk_user_manager_manager_id")
+  @@index([user_id], map: "fk_user_manager_user_id")
+}
+
+model interactive_quiz_results {
+  id                           Int                            @id @default(autoincrement()) @db.UnsignedInt
+  interactive_id               Int?                           @db.UnsignedInt
+  learner_id                   Int                            @db.UnsignedInt
+  course_id                    Int                            @db.UnsignedInt
+  content_session_id           Int?                           @db.UnsignedInt
+  marks                        Int?
+  total_marks                  Int?
+  organization_id              Int?                           @db.UnsignedInt
+  time                         Int?
+  is_active                    Boolean?                       @default(true)
+  submission_date              DateTime?                      @db.DateTime(0)
+  created_at                   DateTime?                      @db.DateTime(0)
+  updated_at                   DateTime?                      @db.DateTime(0)
+  deleted_at                   DateTime?                      @db.DateTime(0)
+  contents                     contents                       @relation(fields: [course_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_interactive_quiz_result_course_id")
+  interactives                 interactives?                  @relation(fields: [interactive_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_interactive_quiz_result_interactive_id")
+  users                        users                          @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_interactive_quiz_result_learner_id")
+  content_sessions             content_sessions?              @relation(fields: [content_session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_interactive_quiz_result_session_id")
+  organizations                organizations?                 @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_interactive_quiz_results_organization_id")
+  interactive_quiz_submissions interactive_quiz_submissions[]
+
+  @@index([course_id], map: "fk_interactive_quiz_result_course_id")
+  @@index([interactive_id], map: "fk_interactive_quiz_result_interactive_id")
+  @@index([learner_id], map: "fk_interactive_quiz_result_learner_id")
+  @@index([content_session_id], map: "fk_interactive_quiz_result_session_id")
+  @@index([organization_id], map: "fk_interactive_quiz_results_organization_id")
+}
+
+model schedules {
+  id                                   Int            @id @default(autoincrement())
+  title                                String?        @db.VarChar(300)
+  description                          String?        @db.Text
+  schdule_date                         DateTime?      @db.Date
+  min_duration                         Int?
+  max_duration                         Int?
+  on_demand                            Boolean?       @db.Bit(1)
+  price                                Decimal?       @db.Decimal(5, 2)
+  start_time                           DateTime?      @db.Time(0)
+  end_time                             DateTime?      @db.Time(0)
+  learner_id                           Int            @db.UnsignedInt
+  instructor_id                        Int            @db.UnsignedInt
+  organization_id                      Int?           @db.UnsignedInt
+  is_active                            Boolean?       @default(true)
+  created_at                           DateTime?      @db.DateTime(0)
+  updated_at                           DateTime?      @db.DateTime(0)
+  deleted_at                           DateTime?      @db.DateTime(0)
+  users_schedules_instructor_idTousers users          @relation("schedules_instructor_idTousers", fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_schedules_instructor_id")
+  users_schedules_learner_idTousers    users          @relation("schedules_learner_idTousers", fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_schedules_learner_id")
+  organizations                        organizations? @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_schedules_organization_id")
+
+  @@index([instructor_id], map: "fk_schedules_instructor_id")
+  @@index([learner_id], map: "fk_schedules_learner_id")
+  @@index([organization_id], map: "fk_schedules_organization_id")
+}
+
+model badges {
+  id                             Int              @id @default(autoincrement()) @db.UnsignedInt
+  name                           String           @unique(map: "name_UNIQUE") @db.VarChar(200)
+  description                    String?          @db.Text
+  badge_type_id                  Int?             @db.UnsignedInt
+  availability_id                Int?             @db.UnsignedInt
+  no_of_courses                  Int?
+  amount                         Decimal?         @db.Decimal(5, 2)
+  instructor_id                  Int?             @db.UnsignedInt
+  is_active                      Int?             @db.TinyInt
+  is_draft                       Int?             @db.TinyInt
+  created_at                     DateTime?        @db.DateTime(0)
+  updated_at                     DateTime?        @db.DateTime(0)
+  deleted_at                     DateTime?        @db.DateTime(0)
+  is_default                     Int?             @default(0) @db.TinyInt
+  organization_id                Int?             @db.UnsignedInt
+  created_by                     Int?             @db.UnsignedInt
+  badge_courses                  badge_courses[]
+  availabilities                 availabilities?  @relation(fields: [availability_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_badge_availability_id")
+  users                          users?           @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_badge_instructor_id")
+  badge_types                    badge_types?     @relation(fields: [badge_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_badge_type_id")
+  users_badges_created_byTousers users?           @relation("badges_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_badges_created_by")
+  organizations                  organizations?   @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_badges_organization_id")
+  learner_badges                 learner_badges[]
+  pathway_badges                 pathway_badges[]
+  pathways                       pathways[]
+
+  @@index([availability_id], map: "fk_badge_availability_id")
+  @@index([instructor_id], map: "fk_badge_instructor_id_idx")
+  @@index([badge_type_id], map: "fk_badge_type_id_idx")
+  @@index([organization_id], map: "fk_badges_organization_id_idx")
+  @@index([created_by], map: "fk_badges_created_by")
+}
+
+model certification_levels {
+  id             Int              @id @default(autoincrement()) @db.UnsignedInt
+  title          String           @db.VarChar(255)
+  is_active      Boolean          @default(true)
+  created_at     DateTime?        @db.Timestamp(0)
+  updated_at     DateTime?        @db.Timestamp(0)
+  deleted_at     DateTime?        @db.Timestamp(0)
+  created_by     Int?             @db.UnsignedInt
+  users          users?           @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_certification_levels_created_by")
+  pathway_levels pathway_levels[]
+
+  @@index([created_by], map: "fk_certification_levels_created_by")
+}
+
+model clusters {
+  id                                    Int                @id @default(autoincrement()) @db.UnsignedInt
+  title                                 String             @db.VarChar(255)
+  description                           String             @db.Text
+  is_active                             Boolean            @default(true)
+  color_id                              Int                @db.UnsignedInt
+  from_grade_id                         Int                @db.UnsignedInt
+  to_grade_id                           Int                @db.UnsignedInt
+  progress                              Int?               @default(0)
+  created_at                            DateTime?          @db.Timestamp(0)
+  updated_at                            DateTime?          @db.Timestamp(0)
+  deleted_at                            DateTime?          @db.Timestamp(0)
+  organization_id                       Int?               @db.UnsignedInt
+  instructor_id                         Int?               @db.UnsignedInt
+  created_by                            Int?               @db.UnsignedInt
+  cluster_pathways                      cluster_pathways[]
+  colors                                colors             @relation(fields: [color_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clusters_color_id_foreign")
+  grades_clusters_from_grade_idTogrades grades             @relation("clusters_from_grade_idTogrades", fields: [from_grade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clusters_from_grade_id_foreign")
+  users                                 users?             @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clusters_instructor_id_foreign")
+  organizations                         organizations?     @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clusters_organization_id_foreign")
+  grades_clusters_to_grade_idTogrades   grades             @relation("clusters_to_grade_idTogrades", fields: [to_grade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clusters_to_grade_id_foreign")
+  users_clusters_created_byTousers      users?             @relation("clusters_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clusters_created_by")
+
+  @@index([color_id], map: "clusters_color_id_foreign")
+  @@index([from_grade_id], map: "clusters_from_grade_id_foreign")
+  @@index([to_grade_id], map: "clusters_to_grade_id_foreign")
+  @@index([organization_id], map: "clusters_organization_id_foreign_idx")
+  @@index([instructor_id], map: "clusters_instructor_id_foreign_idx")
+  @@index([created_by], map: "fk_clusters_created_by")
+}
+
+model colors {
+  id         Int        @id @default(autoincrement()) @db.UnsignedInt
+  name       String     @db.VarChar(255)
+  hex_code   String     @db.VarChar(255)
+  is_active  Boolean    @default(true)
+  created_at DateTime?  @db.Timestamp(0)
+  updated_at DateTime?  @db.Timestamp(0)
+  deleted_at DateTime?  @db.Timestamp(0)
+  clusters   clusters[]
+}
+
+model poll_question_options {
+  id                        Int                         @id @default(autoincrement()) @db.UnsignedInt
+  answer                    String                      @db.VarChar(100)
+  poll_question_id          Int                         @db.UnsignedInt
+  is_active                 Boolean?                    @default(true)
+  created_at                DateTime?                   @db.DateTime(0)
+  updated_at                DateTime?                   @db.DateTime(0)
+  deleted_at                DateTime?                   @db.DateTime(0)
+  poll_questions            poll_questions              @relation(fields: [poll_question_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_poll_question_option_question_id")
+  poll_question_submissions poll_question_submissions[]
+
+  @@index([poll_question_id], map: "fk_poll_question_option_question_id")
+}
+
+model poll_question_submissions {
+  id                      Int                   @id @default(autoincrement()) @db.UnsignedInt
+  poll_question_id        Int                   @db.UnsignedInt
+  poll_question_option_id Int                   @db.UnsignedInt
+  learner_id              Int                   @db.UnsignedInt
+  organization_id         Int?                  @db.UnsignedInt
+  is_active               Boolean?              @default(true)
+  created_at              DateTime?             @db.DateTime(0)
+  updated_at              DateTime?             @db.DateTime(0)
+  deleted_at              DateTime?             @db.DateTime(0)
+  users                   users                 @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_poll_question_submission_leaner_id")
+  poll_question_options   poll_question_options @relation(fields: [poll_question_option_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_quiz_submission_question_id")
+  organizations           organizations?        @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_poll_question_submission_organization_id")
+  poll_questions          poll_questions        @relation(fields: [poll_question_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_poll_question_submission_question_id")
+
+  @@index([learner_id], map: "FK_poll_question_submission_leaner_id")
+  @@index([poll_question_option_id], map: "FK_quiz_submission_question_id")
+  @@index([poll_question_id], map: "fk_poll_question_submission_question_id")
+  @@index([organization_id], map: "fk_poll_question_submission_organization_id")
+}
+
+model poll_questions {
+  id                        Int                         @id @default(autoincrement()) @db.UnsignedInt
+  qustion                   String                      @db.VarChar(1000)
+  instructor_id             Int                         @db.UnsignedInt
+  session_id                Int                         @db.UnsignedInt
+  no_of_students            Int
+  is_active                 Boolean?
+  organization_id           Int?                        @db.UnsignedInt
+  created_at                DateTime?                   @db.DateTime(0)
+  updated_at                DateTime?                   @db.DateTime(0)
+  deleted_at                DateTime?                   @db.DateTime(0)
+  poll_question_options     poll_question_options[]
+  poll_question_submissions poll_question_submissions[]
+  organizations             organizations?              @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_poll_question_organization_id")
+  contents                  contents                    @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_poll_question_session_id")
+  users                     users                       @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_poll_questions_instructor_id")
+
+  @@index([session_id], map: "fk_poll_question_session_id")
+  @@index([instructor_id], map: "fk_poll_questions_instructor_id")
+  @@index([organization_id], map: "fk_poll_question_organization_id")
+}
+
+model onet_api {
+  id               Int       @id @default(autoincrement())
+  user_id          Int       @db.UnsignedInt
+  onet_description String    @db.Text
+  created_at       DateTime? @db.DateTime(0)
+  updated_at       DateTime? @db.DateTime(0)
+  is_active        Boolean?  @default(true)
+  deleted_at       DateTime? @db.DateTime(0)
+  users            users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_onet_api_id")
+
+  @@index([user_id], map: "fk_onet_api_id")
+}
+
+model goals {
+  id            Int             @id @default(autoincrement()) @db.UnsignedInt
+  goal          String?         @unique(map: "goal") @db.VarChar(300)
+  is_active     Boolean?        @default(true)
+  created_at    DateTime?       @db.DateTime(0)
+  updated_at    DateTime?       @db.DateTime(0)
+  deleted_at    DateTime?       @db.DateTime(0)
+  learner_goals learner_goals[]
+}
+
+model learner_details {
+  id                                           Int       @id @default(autoincrement()) @db.UnsignedInt
+  from_grade_id                                Int?      @db.UnsignedInt
+  to_grade_id                                  Int?      @db.UnsignedInt
+  date_of_birth                                DateTime? @db.Date
+  learner_interest                             String?   @db.Text
+  learner_id                                   Int?      @db.UnsignedInt
+  is_active                                    Boolean?  @default(true)
+  created_at                                   DateTime? @db.DateTime(0)
+  updated_at                                   DateTime? @db.DateTime(0)
+  deleted_at                                   DateTime? @db.DateTime(0)
+  grades_learner_details_from_grade_idTogrades grades?   @relation("learner_details_from_grade_idTogrades", fields: [from_grade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_detail_from_grade_id")
+  users                                        users?    @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_detail_learner_id")
+  grades_learner_details_to_grade_idTogrades   grades?   @relation("learner_details_to_grade_idTogrades", fields: [to_grade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_detail_to_grade_id")
+
+  @@index([from_grade_id], map: "fk_learner_detail_from_grade_id")
+  @@index([learner_id], map: "fk_learner_detail_learner_id")
+  @@index([to_grade_id], map: "fk_learner_detail_to_grade_id")
+}
+
+model learner_goals {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  learner_id Int?      @db.UnsignedInt
+  skill_id   Int?      @db.UnsignedInt
+  goal_id    Int?      @db.UnsignedInt
+  is_active  Boolean?  @default(true)
+  created_at DateTime? @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+  goals      goals?    @relation(fields: [goal_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_goal_id")
+  users      users?    @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_goal_learner_id")
+
+  @@index([goal_id], map: "fk_learner_goal_id")
+  @@index([learner_id], map: "fk_learner_goal_learner_id")
+}
+
+model learner_skills {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  skill_id   Int?      @db.UnsignedInt
+  learner_id Int?      @db.UnsignedInt
+  is_active  Boolean?  @default(true)
+  created_at DateTime? @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+  users      users?    @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_skill_learner_id")
+  skills     skills?   @relation(fields: [skill_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_skills_id")
+
+  @@index([learner_id], map: "fk_learner_skill_learner_id")
+  @@index([skill_id], map: "fk_learner_skills_id")
+}
+
+model organizations {
+  id                                                              Int                                  @id @default(autoincrement()) @db.UnsignedInt
+  name                                                            String?                              @db.VarChar(500)
+  pid                                                             Int?                                 @db.UnsignedInt
+  code                                                            String?                              @db.VarChar(50)
+  is_active                                                       Int?                                 @db.TinyInt
+  organization_type_id                                            Int?                                 @db.UnsignedInt
+  site_url                                                        String?                              @db.VarChar(300)
+  created_at                                                      DateTime?                            @db.DateTime(0)
+  updated_at                                                      DateTime?                            @db.DateTime(0)
+  deleted_at                                                      DateTime?                            @db.DateTime(0)
+  attachments                                                     attachments[]
+  augmented_3d_models                                             augmented_3d_models[]
+  badges                                                          badges[]
+  chatbot_questions                                               chatbot_questions[]
+  clusters                                                        clusters[]
+  contents                                                        contents[]
+  interactive_assignment_results                                  interactive_assignment_results[]
+  interactive_assignment_submissions                              interactive_assignment_submissions[]
+  interactive_quest_submissions                                   interactive_quest_submissions[]
+  interactive_quiz_results                                        interactive_quiz_results[]
+  interactive_quiz_submissions                                    interactive_quiz_submissions[]
+  interactives                                                    interactives[]
+  learner_badges                                                  learner_badges[]
+  notifications                                                   notifications[]
+  organization_contents                                           organization_contents[]
+  organizations                                                   organizations?                       @relation("organizationsToorganizations", fields: [pid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_pid")
+  other_organizations                                             organizations[]                      @relation("organizationsToorganizations")
+  organizations_organizations_organization_type_idToorganizations organization_types?                  @relation("organizations_organization_type_idToorganizations", fields: [organization_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_type_id")
+  orgnization_details                                             orgnization_details[]
+  pathways                                                        pathways[]
+  poll_question_submissions                                       poll_question_submissions[]
+  poll_questions                                                  poll_questions[]
+  question_skills                                                 question_skills[]
+  questions                                                       questions[]
+  schedules                                                       schedules[]
+  smartdesks                                                      smartdesks[]
+  users                                                           users[]
+
+  @@index([pid], map: "fk_organization_pid")
+  @@index([organization_type_id], map: "fk_organization_type_id_idx")
+}
+
+model abilities {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  name       String    @unique(map: "name_UNIQUE") @db.VarChar(2)
+  is_active  Boolean?  @default(true)
+  created_at DateTime? @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+}
+
+model badge_statuses {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  name       String    @unique(map: "name_UNIQUE") @db.VarChar(50)
+  is_active  Boolean?  @default(true)
+  created_at DateTime? @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+}
+
+model badge_types {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  name       String    @unique(map: "name_UNIQUE") @db.VarChar(50)
+  deleted_at DateTime? @db.DateTime(0)
+  is_active  Boolean?  @default(true)
+  created_at DateTime? @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  badges     badges[]
+}
+
+model visibilities {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  name       String    @unique(map: "name_UNIQUE") @db.VarChar(2)
+  is_active  Boolean?  @default(true)
+  created_at DateTime? @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+}
+
+model badge_courses {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  course_id  Int       @db.UnsignedInt
+  badge_id   Int       @db.UnsignedInt
+  is_active  Boolean?  @default(true)
+  created_at DateTime? @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+  badges     badges    @relation(fields: [badge_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_badge_course_badge_id")
+  contents   contents  @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_badge_courses_course_id")
+
+  @@index([badge_id], map: "fk_badge_course_badge_id")
+  @@index([course_id], map: "fk_badge_courses_course_id")
+}
+
+model pathway_badges {
+  id               Int            @id @default(autoincrement()) @db.UnsignedInt
+  pathway_level_id Int            @db.UnsignedInt
+  pathway_id       Int            @db.UnsignedInt
+  badge_id         Int            @db.UnsignedInt
+  is_active        Boolean?       @default(true)
+  created_at       DateTime?      @db.DateTime(0)
+  updated_at       DateTime?      @db.DateTime(0)
+  deleted_at       DateTime?      @db.DateTime(0)
+  badges           badges         @relation(fields: [badge_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_pathway_badge_badge_id")
+  pathways         pathways       @relation(fields: [pathway_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_pathway_badge_pathway_id")
+  pathway_levels   pathway_levels @relation(fields: [pathway_level_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_pathway_badge_pathway_level_id")
+
+  @@index([badge_id], map: "fk_pathway_badge_badge_id")
+  @@index([pathway_id], map: "fk_pathway_badge_pathway_id")
+  @@index([pathway_level_id], map: "fk_pathway_badge_pathway_level_id")
+}
+
+model pathway_levels {
+  id                     Int                   @id @default(autoincrement()) @db.UnsignedInt
+  certification_level_id Int?                  @db.UnsignedInt
+  pathway_id             Int?                  @db.UnsignedInt
+  is_active              Boolean?              @default(true)
+  created_at             DateTime?             @db.DateTime(0)
+  updated_at             DateTime?             @db.DateTime(0)
+  deleted_at             DateTime?             @db.DateTime(0)
+  pathway_badges         pathway_badges[]
+  certification_levels   certification_levels? @relation(fields: [certification_level_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_pathway_level_certification_level_id")
+  pathways               pathways?             @relation(fields: [pathway_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_pathway_level_pathway_id")
+
+  @@index([certification_level_id], map: "fk_pathway_level_certification_level_id")
+  @@index([pathway_id], map: "fk_pathway_level_pathway_id")
+}
+
+model pathways {
+  id                               Int                @id @default(autoincrement()) @db.UnsignedInt
+  name                             String?            @db.VarChar(200)
+  description                      String?            @db.Text
+  organization_id                  Int?               @db.UnsignedInt
+  instructor_id                    Int?               @db.UnsignedInt
+  badge_id                         Int?               @db.UnsignedInt
+  is_active                        Boolean?           @default(true)
+  created_at                       DateTime?          @db.DateTime(0)
+  updated_at                       DateTime?          @db.DateTime(0)
+  deleted_at                       DateTime?          @db.DateTime(0)
+  created_by                       Int?               @db.UnsignedInt
+  cluster_pathways                 cluster_pathways[]
+  learner_pathways                 learner_pathways[]
+  pathway_badges                   pathway_badges[]
+  pathway_levels                   pathway_levels[]
+  badges                           badges?            @relation(fields: [badge_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_pathways_badge_id")
+  users_pathways_created_byTousers users?             @relation("pathways_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_pathways_created_by")
+  users                            users?             @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_pathways_instructor_id")
+  organizations                    organizations?     @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_pathways_organization_id")
+
+  @@index([organization_id], map: "fk_pathways_organization_id_idx")
+  @@index([instructor_id], map: "fk_pathways_instructor_id_idx")
+  @@index([badge_id], map: "fk_pathways_badge_id_idx")
+  @@index([created_by], map: "fk_pathways_created_by")
+}
+
+model chats {
+  id           Int        @id @default(autoincrement()) @db.UnsignedInt
+  reciever_id  Int?       @db.UnsignedInt
+  last_message String?
+  user_id      Int?       @db.UnsignedInt
+  created_at   DateTime?  @default(now()) @db.DateTime(0)
+  updated_at   DateTime?  @db.DateTime(0)
+  is_active    Boolean?   @default(true)
+  deleted_at   DateTime?  @db.DateTime(0)
+  users        users?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_chat_user_Id")
+  messages     messages[]
+
+  @@index([user_id], map: "fk_chat_user_Id")
+}
+
+model messages {
+  id           Int       @id @default(autoincrement()) @db.UnsignedInt
+  text         String
+  is_seen      Boolean   @default(false)
+  is_delivered Boolean   @default(false)
+  sendar_id    Int?      @db.UnsignedInt
+  recipient_id Int?      @db.UnsignedInt
+  chat_id      Int?      @db.UnsignedInt
+  timeStamp    DateTime? @db.DateTime(0)
+  created_at   DateTime? @default(now()) @db.DateTime(0)
+  updated_at   DateTime? @db.DateTime(0)
+  is_active    Boolean?  @default(true)
+  deleted_at   DateTime? @db.DateTime(0)
+  chats        chats?    @relation(fields: [chat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_message_chat_id")
+
+  @@index([chat_id], map: "fk_message_chat_id")
+}
+
+model organization_types {
+  id                                                                    Int             @id @default(autoincrement()) @db.UnsignedInt
+  name                                                                  String?         @db.VarChar(100)
+  is_active                                                             Boolean?        @default(true)
+  created_at                                                            DateTime?       @db.DateTime(0)
+  updated_at                                                            DateTime?       @db.DateTime(0)
+  deleted_at                                                            DateTime?       @db.DateTime(0)
+  other_organizations_organizations_organization_type_idToorganizations organizations[] @relation("organizations_organization_type_idToorganizations")
+}
+
+model orgnization_details {
+  id              Int            @id @default(autoincrement()) @db.UnsignedInt
+  contact_name    String?        @db.VarChar(100)
+  contact_no      String?        @db.VarChar(20)
+  organization_id Int?           @db.UnsignedInt
+  is_active       Boolean?       @default(true)
+  created_at      DateTime?      @db.DateTime(0)
+  updated_at      DateTime?      @db.DateTime(0)
+  deleted_at      DateTime?      @db.DateTime(0)
+  organizations   organizations? @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_id")
+
+  @@index([organization_id], map: "fk_organization_id")
+}
+
+model cluster_pathways {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  cluster_id Int       @db.UnsignedInt
+  pathway_id Int       @db.UnsignedInt
+  is_active  Boolean?  @default(true)
+  created_at DateTime? @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+  clusters   clusters  @relation(fields: [cluster_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_cluster_pathway_cluster_id")
+  pathways   pathways  @relation(fields: [pathway_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_cluster_pathway_pathway_id_id")
+
+  @@index([cluster_id], map: "fk_cluster_pathway_cluster_id")
+  @@index([pathway_id], map: "fk_cluster_pathway_pathway_id_id")
+}
+
+model learner_pathways {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  learner_id  Int?      @db.UnsignedInt
+  pathway_id  Int?      @db.UnsignedInt
+  is_approved Boolean?
+  is_active   Boolean?  @default(true)
+  created_at  DateTime? @db.DateTime(0)
+  updated_at  DateTime? @db.DateTime(0)
+  deleted_at  DateTime? @db.DateTime(0)
+  users       users?    @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_pathway_learner_id")
+  pathways    pathways? @relation(fields: [pathway_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_pathway_pathway_id")
+
+  @@index([learner_id], map: "fk_learner_pathway_learner_id")
+  @@index([pathway_id], map: "fk_learner_pathway_pathway_id")
+}
+
+model content_module_segment_sessions {
+  id                        Int                      @id @default(autoincrement()) @db.UnsignedInt
+  session_id                Int?                     @db.UnsignedInt
+  content_module_segment_id Int?                     @db.UnsignedInt
+  class_type_id             Int?                     @db.UnsignedInt
+  start_date                DateTime?                @db.Date
+  end_date                  DateTime?                @db.Date
+  segment_points            Decimal?                 @db.Decimal(3, 2)
+  created_at                DateTime?                @db.DateTime(0)
+  updated_at                DateTime?                @db.DateTime(0)
+  is_active                 Boolean?                 @default(true)
+  deleted_at                DateTime?                @db.DateTime(0)
+  class_types               class_types?             @relation(fields: [class_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_content_module_segments_class_id")
+  contents                  contents?                @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_content_module_segments_session_id")
+  content_module_segments   content_module_segments? @relation(fields: [content_module_segment_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_content_module_session_segments_id")
+
+  @@index([class_type_id], map: "fk_content_module_segments_class_id")
+  @@index([session_id], map: "fk_content_module_segments_session_id")
+  @@index([content_module_segment_id], map: "fk_content_module_session_segments_id")
+}
+
+model instructor_sessions {
+  id                 Int               @id @default(autoincrement()) @db.UnsignedInt
+  session_id         Int?              @db.UnsignedInt
+  instructor_id      Int?              @db.UnsignedInt
+  content_session_id Int?              @db.UnsignedInt
+  is_active          Boolean?          @default(true)
+  created_at         DateTime?         @db.DateTime(0)
+  updated_at         DateTime?         @db.DateTime(0)
+  deleted_at         DateTime?         @db.DateTime(0)
+  content_sessions   content_sessions? @relation(fields: [content_session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_instructor_sessions_content_session_id")
+  users              users?            @relation(fields: [instructor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_instructor_sessions_instructor_id")
+  contents           contents?         @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_instructor_sessions_session_id")
+
+  @@index([instructor_id], map: "fk_instructor_sessions_instructor_id")
+  @@index([session_id], map: "fk_instructor_sessions_session_id")
+  @@index([content_session_id], map: "fk_instructor_content_session_id_idx")
+}
+
+model content_interactive_segment_sessions {
+  id                             Int                           @id @default(autoincrement()) @db.UnsignedInt
+  session_id                     Int?                          @db.UnsignedInt
+  content_interactive_segment_id Int?                          @db.UnsignedInt
+  start_date                     DateTime?                     @db.Date
+  end_date                       DateTime?                     @db.Date
+  is_assesment                   Boolean?
+  segment_points                 Decimal?                      @db.Decimal(5, 2)
+  is_quiz_graded                 Boolean?
+  is_quiz_offiline               Boolean?
+  interactive_id                 Int?                          @db.UnsignedInt
+  created_at                     DateTime?                     @db.DateTime(0)
+  updated_at                     DateTime?                     @db.DateTime(0)
+  is_active                      Boolean?                      @default(true)
+  deleted_at                     DateTime?                     @db.DateTime(0)
+  interactives                   interactives?                 @relation(fields: [interactive_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_content_interactive_segment_interactive_id")
+  content_interactive_segments   content_interactive_segments? @relation(fields: [content_interactive_segment_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_content_interactive_session_segments_id")
+  contents                       contents?                     @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_content_segments_session_id")
+
+  @@index([content_interactive_segment_id], map: "fk_content_interactive_session_segments_id")
+  @@index([session_id], map: "fk_content_segments_session_id")
+  @@index([interactive_id], map: "fk_content_interactive_segment_interactive_id_idx")
+}
+
+model smartdesk_sessions {
+  id                      Int                       @id @default(autoincrement()) @db.UnsignedInt
+  session_id              Int?                      @db.UnsignedInt
+  session_name            String?                   @db.VarChar(500)
+  contents                contents?                 @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_smartdesk_session_id")
+  socket_learner_sessions socket_learner_sessions[]
+
+  @@index([session_id], map: "fk_smartdesk_session_id")
+}
+
+model socket_learner_sessions {
+  id                   Int                 @id @default(autoincrement()) @db.UnsignedInt
+  socket_learner_id    Int?                @db.UnsignedInt
+  smartdesk_session_id Int?                @db.UnsignedInt
+  socket_learners      socket_learners?    @relation(fields: [socket_learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_socket_learner_session_learner_id")
+  smartdesk_sessions   smartdesk_sessions? @relation(fields: [smartdesk_session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_socket_learner_session_session_id")
+
+  @@index([socket_learner_id], map: "fk_socket_learner_session_learner_id")
+  @@index([smartdesk_session_id], map: "fk_socket_learner_session_session_id")
+}
+
+model socket_learners {
+  id                      Int                       @id @default(autoincrement()) @db.UnsignedInt
+  user_id                 Int?                      @db.UnsignedInt
+  name                    String?                   @db.VarChar(200)
+  handraised              Boolean?
+  is_watching             Boolean?
+  learnerSessionFeeling   String?                   @db.VarChar(500)
+  is_session_join         Boolean?
+  socket_learner_sessions socket_learner_sessions[]
+  users                   users?                    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_socket_learner_user_id")
+
+  @@index([user_id], map: "fk_socket_learner_user_id")
+}
+
+model user_sockets {
+  id        Int     @id @default(autoincrement()) @db.UnsignedInt
+  user_id   Int?    @db.UnsignedInt
+  socket_id String? @db.VarChar(500)
+  users     users?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_socket_user_id")
+
+  @@index([user_id], map: "fk_user_socket_user_id")
+}
+
+model augmented_3d_models {
+  id                             Int                              @id @default(autoincrement()) @db.UnsignedInt
+  file_name                      String?                          @db.VarChar(500)
+  qr_code                        String?                          @db.Text
+  organization_id                Int?                             @db.UnsignedInt
+  is_active                      Boolean?                         @default(true)
+  created_at                     DateTime?                        @db.DateTime(0)
+  updated_at                     DateTime?                        @db.DateTime(0)
+  deleted_at                     DateTime?                        @db.DateTime(0)
+  user_id                        Int?                             @db.UnsignedInt
+  attachment_id                  Int?                             @db.UnsignedInt
+  augmented_3d_model_attachments augmented_3d_model_attachments[]
+  organizations                  organizations?                   @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_augmented_3d_model_organization_id")
+  users                          users?                           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_augmented_3d_model_user_id")
+  attachments                    attachments?                     @relation(fields: [attachment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_augmented_3d_modelss_attachment_id")
+
+  @@index([organization_id], map: "fk_augmented_3d_model_organization_id")
+  @@index([user_id], map: "fk_augmented_3d_model_user_id_idx")
+  @@index([attachment_id], map: "fk_augmented_3d_model_attachment_id_idx")
+}
+
+model interactive_assignment_results {
+  id                                 Int                                  @id @default(autoincrement()) @db.UnsignedInt
+  learner_id                         Int?                                 @db.UnsignedInt
+  course_id                          Int?                                 @db.UnsignedInt
+  content_session_id                 Int?                                 @db.UnsignedInt
+  interactive_id                     Int?                                 @db.UnsignedInt
+  obtained_marks                     Int?
+  total_marks                        Int?
+  organization_id                    Int?                                 @db.UnsignedInt
+  is_active                          Boolean?
+  created_at                         DateTime?                            @db.DateTime(0)
+  updated_at                         DateTime?                            @db.DateTime(0)
+  deleted_at                         DateTime?                            @db.DateTime(0)
+  content_sessions                   content_sessions?                    @relation(fields: [content_session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_assignment_results_content_session_id")
+  contents                           contents?                            @relation(fields: [course_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_assignment_results_course_id")
+  users                              users?                               @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_assignment_results_leaner_id")
+  organizations                      organizations?                       @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_assignment_results_organization_id")
+  interactive_assignment_submissions interactive_assignment_submissions[]
+
+  @@index([content_session_id], map: "fk_assignment_results_content_session_id")
+  @@index([course_id], map: "fk_assignment_results_course_id")
+  @@index([learner_id], map: "fk_assignment_results_leaner_id")
+  @@index([organization_id], map: "fk_assignment_results_organization_id")
+}
+
+model user_sessions {
+  id                   Int      @id @default(autoincrement()) @db.UnsignedInt
+  access_token         String?  @db.VarChar(300)
+  refresh_token        String?  @db.VarChar(300)
+  is_session_blacklist Boolean? @default(false)
+  user_id              Int?     @db.UnsignedInt
+  access_hash          String?  @db.VarChar(300)
+  refresh_hash         String?  @db.VarChar(300)
+  users                users?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_sessions_user_id")
+
+  @@index([user_id], map: "fk_user_sessions_user_id")
+}
+
+model instructor_activities {
+  id                 Int               @id @default(autoincrement()) @db.UnsignedInt
+  instructor_id      Int?              @db.UnsignedInt
+  activity_id        Int?              @db.UnsignedInt
+  content_session_id Int?              @db.UnsignedInt
+  content_sessions   content_sessions? @relation(fields: [content_session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_instructor_activites_session_id")
+  contents           contents?         @relation(fields: [activity_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_instructor_activity_id")
+  users              users?            @relation(fields: [instructor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_instructor_activity_instructor_id")
+
+  @@index([activity_id], map: "fk_instructor_activity_id")
+  @@index([instructor_id], map: "fk_instructor_activity_instructor_id")
+  @@index([content_session_id], map: "fk_instructor_activites_session_id_idx")
+}
+
+model instructor_courses {
+  id                 Int               @id @default(autoincrement()) @db.UnsignedInt
+  instructor_id      Int?              @db.UnsignedInt
+  course_id          Int?              @db.UnsignedInt
+  content_session_id Int?              @db.UnsignedInt
+  content_sessions   content_sessions? @relation(fields: [content_session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_instructor_courses_content_id")
+  contents           contents?         @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_instructor_courses_course_id")
+  users              users?            @relation(fields: [instructor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_instructor_courses_instructor_id")
+
+  @@index([course_id], map: "fk_instructor_courses_course_id")
+  @@index([instructor_id], map: "fk_instructor_courses_instructor_id")
+  @@index([content_session_id], map: "fk_instructor_courses_content_id_idx")
+}
+
+model instructor_interactives {
+  id                  Int                @id @default(autoincrement()) @db.UnsignedInt
+  instructor_id       Int?               @db.UnsignedInt
+  interactive_type_id Int?               @db.UnsignedInt
+  interactive_id      Int?               @db.UnsignedInt
+  content_session_id  Int?               @db.UnsignedInt
+  content_sessions    content_sessions?  @relation(fields: [content_session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_instructor_content_session_id")
+  interactives        interactives?      @relation(fields: [interactive_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_instructor_interactive_id")
+  users               users?             @relation(fields: [instructor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_instructor_interactive_instructor_id")
+  interactive_types   interactive_types? @relation(fields: [interactive_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_instructor_interactive_type_id")
+
+  @@index([interactive_id], map: "fk_instructor_interactive_id")
+  @@index([instructor_id], map: "fk_instructor_interactive_instructor_id")
+  @@index([interactive_type_id], map: "fk_instructor_interactive_type_id")
+  @@index([content_session_id], map: "fk_instructor_content_session_id_idx")
+}
+
+model content_module_segment_time_record {
+  id                                                                Int       @id @default(autoincrement()) @db.UnsignedInt
+  learner_id                                                        Int?      @db.UnsignedInt
+  session_id                                                        Int?      @db.UnsignedInt
+  activity_id                                                       Int?      @db.UnsignedInt
+  time_spent                                                        Int?
+  contents_content_module_segment_time_record_activity_idTocontents contents? @relation("content_module_segment_time_record_activity_idTocontents", fields: [activity_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_content_module_segment_time_activity_id")
+  users                                                             users?    @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_content_module_segment_time_learner_id")
+  contents_content_module_segment_time_record_session_idTocontents  contents? @relation("content_module_segment_time_record_session_idTocontents", fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_content_module_segment_time_session_id")
+
+  @@index([activity_id], map: "fk_content_module_segment_time_activity_id")
+  @@index([learner_id], map: "fk_content_module_segment_time_learner_id")
+  @@index([session_id], map: "fk_content_module_segment_time_session_id")
+}
+
+model augmented_3d_model_attachments {
+  id                    Int                  @id @default(autoincrement()) @db.UnsignedInt
+  attachment_id         Int?                 @db.UnsignedInt
+  augmented_3d_model_id Int?                 @db.UnsignedInt
+  is_active             Boolean?             @default(true)
+  created_at            DateTime?            @db.DateTime(0)
+  updated_at            DateTime?            @db.DateTime(0)
+  deleted_at            DateTime?            @db.DateTime(0)
+  attachments           attachments?         @relation(fields: [attachment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_augmented_3d_model_attachment_id")
+  augmented_3d_models   augmented_3d_models? @relation(fields: [augmented_3d_model_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_augmented_3d_model_id")
+
+  @@index([attachment_id], map: "fk_augmented_3d_model_attachment_id")
+  @@index([augmented_3d_model_id], map: "fk_augmented_3d_model_id")
+}
+
+model learner_badges {
+  id              Int            @id @default(autoincrement()) @db.UnsignedInt
+  learner_id      Int?           @db.UnsignedInt
+  session_id      Int?           @db.UnsignedInt
+  organization_id Int?           @db.UnsignedInt
+  badge_id        Int?           @db.UnsignedInt
+  is_active       Boolean?
+  created_at      DateTime?      @db.DateTime(0)
+  updated_at      DateTime?      @db.DateTime(0)
+  deleted_at      DateTime?      @db.DateTime(0)
+  badges          badges?        @relation(fields: [badge_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_alearner_badges_badge_id")
+  contents        contents?      @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_alearner_badges_session_id")
+  users           users?         @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_badges_leaner_id")
+  organizations   organizations? @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_badges_organization_id")
+
+  @@index([badge_id], map: "fk_alearner_badges_badge_id")
+  @@index([session_id], map: "fk_alearner_badges_session_id")
+  @@index([learner_id], map: "fk_learner_badges_leaner_id")
+  @@index([organization_id], map: "fk_learner_badges_organization_id")
+}
+
+model career_interests {
+  id                       Int                        @id @default(autoincrement()) @db.UnsignedInt
+  name                     String?                    @unique(map: "name") @db.VarChar(100)
+  learner_career_interests learner_career_interests[]
+}
+
+model learner_career_interests {
+  id                 Int               @id @default(autoincrement()) @db.UnsignedInt
+  learner_id         Int?              @db.UnsignedInt
+  career_interest_id Int?              @db.UnsignedInt
+  career_interests   career_interests? @relation(fields: [career_interest_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_career_interest_id")
+  users              users?            @relation(fields: [learner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_learner_career_interest_learner_id")
+
+  @@index([career_interest_id], map: "fk_learner_career_interest_id")
+  @@index([learner_id], map: "fk_learner_career_interest_learner_id")
+}
+
+model organization_contents {
+  id                                                 Int            @id @default(autoincrement()) @db.UnsignedInt
+  from_grade_id                                      Int?           @db.UnsignedInt
+  to_grade_id                                        Int?           @db.UnsignedInt
+  organization_id                                    Int?           @db.UnsignedInt
+  grades_organization_contents_from_grade_idTogrades grades?        @relation("organization_contents_from_grade_idTogrades", fields: [from_grade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_content_from_grade_id")
+  organizations                                      organizations? @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_content_organization_id")
+  grades_organization_contents_to_grade_idTogrades   grades?        @relation("organization_contents_to_grade_idTogrades", fields: [to_grade_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_organization_content_to_grade_id")
+
+  @@index([from_grade_id], map: "fk_organization_content_from_grade_id")
+  @@index([organization_id], map: "fk_organization_content_organization_id")
+  @@index([to_grade_id], map: "fk_organization_content_to_grade_id")
+}
+
+model question_skills {
+  id              Int            @id @default(autoincrement()) @db.UnsignedInt
+  skill_id        Int?           @db.UnsignedInt
+  sub_skill_id    Int?           @db.UnsignedInt
+  organization_id Int?           @db.UnsignedInt
+  question_id     Int?           @db.UnsignedInt
+  skill_points    Int?           @db.UnsignedInt
+  organizations   organizations? @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_quesion_skills_organization_id")
+  questions       questions?     @relation(fields: [question_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_quesion_skills_question_id")
+  skills          skills?        @relation(fields: [skill_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_quesion_skills_skill_id")
+  sub_skills      sub_skills?    @relation(fields: [sub_skill_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_quesion_skills_sub_skill_id")
+
+  @@index([organization_id], map: "fk_quesion_skills_organization_id")
+  @@index([skill_id], map: "fk_quesion_skills_skill_id")
+  @@index([sub_skill_id], map: "fk_quesion_skills_sub_skill_id")
+  @@index([question_id], map: "fk_quesion_skills_question_id")
+}
